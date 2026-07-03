@@ -8,6 +8,7 @@
         :root {
             --dual-blue: #081A3A;
             --accent-orange: #FF6A00;
+            --wa-green: #25D366;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -16,6 +17,7 @@
             font-family: 'Arial Black', Gadget, sans-serif;
             background-color: #f4f7f6;
             color: #333;
+            overflow-x: hidden;
         }
 
         header {
@@ -30,21 +32,30 @@
         .logo .l-dual { color: var(--dual-blue); }
         .logo .l-orange { color: var(--accent-orange); }
 
-        .nav-menu { display: flex; gap: 12px; }
+        .nav-menu { display: flex; gap: 12px; align-items: center; }
         .nav-menu a { color: var(--dual-blue); text-decoration: none; font-size: 0.8rem; font-weight: 900; cursor: pointer; text-transform: uppercase; }
+
+        /* CARRITO EN HEADER (PC) */
+        #cart-header-btn {
+            display: none;
+            background: var(--accent-orange);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.4s;
+        }
+        #cart-header-btn.visible { display: flex; animation: slideInRight 0.4s ease-out; }
+        @keyframes slideInRight { from { transform: translateX(50px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
         /* VISTAS */
         #cat-view { display: none; }
         main { display: block; }
-        
-        /* Persistencia con :target */
         #cat-view:target { display: block; }
         #cat-view:target ~ main { display: none; }
-
-        /* Estilos condicionales de Nav con :target */
-        .home-btn { display: inline-block; }
-        #cat-view:target ~ header .nav-menu .home-btn { display: inline-block; }
-        #cat-view:target ~ header .nav-menu .prod-btn { display: none; }
 
         .hero {
             height: 60vh;
@@ -57,7 +68,6 @@
         .hero-main-text { font-size: 3rem; font-weight: 900; letter-spacing: -1px; line-height: 1.1; margin-bottom: 1.5rem; text-transform: uppercase; }
         .hero-sub { font-size: 1rem; font-family: sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-orange); margin-bottom: 1rem; }
         
-        .hero-btns { display: flex; justify-content: center; gap: 15px; }
         .btn-primary { background: var(--accent-orange); color: white; padding: 1rem 2rem; border-radius: 50px; text-decoration: none; font-size: 1rem; font-weight: 900; cursor: pointer; border: none; transition: transform 0.2s; display: inline-block; }
         .btn-primary:active { transform: scale(0.95); }
 
@@ -74,214 +84,117 @@
 
         .product-card { 
             position: relative; border: none; padding: 25px; border-radius: 15px; text-align: center; 
-            cursor: pointer; background: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s;
+            background: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s;
         }
         .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .product-card label { position: absolute; inset: 0; cursor: pointer; z-index: 5; }
         
-        .p-img { height: 200px; display: flex; align-items: center; justify-content: center; padding: 10px; margin-bottom: 15px; }
+        .p-img { height: 200px; display: flex; align-items: center; justify-content: center; padding: 10px; margin-bottom: 15px; cursor: pointer; }
         .p-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
         
         .price { color: var(--accent-orange); font-size: 1.4rem; font-weight: 900; margin-top: 10px; }
-        .product-card h3 { font-size: 1.1rem; margin: 10px 0; color: var(--dual-blue); text-transform: uppercase; }
+        .product-card h3 { font-size: 1.1rem; margin: 10px 0; color: var(--dual-blue); text-transform: uppercase; cursor: pointer; }
 
-        /* Modales */
+        /* MODALES */
         .product-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85); z-index: 2000;
             display: none; align-items: center; justify-content: center;
             padding: 1.5rem; backdrop-filter: blur(5px);
         }
-        
-        input[type="checkbox"] { display: none; }
-        #check-p1:checked ~ .modal-p1, #check-p2:checked ~ .modal-p2, #check-p3:checked ~ .modal-p3,
-        #check-p4:checked ~ .modal-p4, #check-p5:checked ~ .modal-p5, #check-p6:checked ~ .modal-p6,
-        #check-p7:checked ~ .modal-p7, #check-p8:checked ~ .modal-p8, #check-p9:checked ~ .modal-p9,
-        #check-p10:checked ~ .modal-p10, #check-p11:checked ~ .modal-p11, #check-p13:checked ~ .modal-p13,
-        #check-p14:checked ~ .modal-p14, #check-p15:checked ~ .modal-p15, #check-p16:checked ~ .modal-p16,
-        #check-p17:checked ~ .modal-p17, #check-p18:checked ~ .modal-p18, #check-p19:checked ~ .modal-p19 { display: flex; }
-
+        .modal-active { display: flex; }
         .close-modal-btn { position: absolute; top: 20px; right: 20px; color: white; font-size: 2.5rem; cursor: pointer; z-index: 2001; }
+        .detail-container { max-width: 900px; width: 100%; display: grid; grid-template-columns: 1fr; gap: 2rem; background: white; padding: 2.5rem; border-radius: 20px; position: relative; overflow-y: auto; max-height: 90vh; text-align: center; }
 
-        .detail-container { max-width: 900px; width: 100%; display: grid; grid-template-columns: 1fr; gap: 2rem; background: white; padding: 2.5rem; border-radius: 20px; position: relative; overflow-y: auto; max-height: 90vh; }
-        .p-desc { font-family: sans-serif; font-size: 0.95rem; color: #555; line-height: 1.5; margin-top: 1rem; }
-        .whatsapp-btn { 
-            display: inline-block; width: 100%; background: #25D366; color: white; padding: 1.2rem; 
-            border-radius: 50px; text-decoration: none; font-weight: 900; text-transform: uppercase; text-align: center; margin-top: 1.5rem; font-size: 1rem;
+        /* CONTROLES CANTIDAD MODAL */
+        .qty-control { display: flex; align-items: center; justify-content: center; gap: 15px; margin: 20px 0; }
+        .qty-btn { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--dual-blue); background: white; color: var(--dual-blue); font-size: 1.5rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .qty-val { font-size: 1.4rem; width: 30px; font-weight: 900; }
+
+        .add-to-cart-btn { background: var(--dual-blue); color: white; width: 100%; padding: 1.2rem; border-radius: 50px; border: none; font-weight: 900; text-transform: uppercase; cursor: pointer; font-size: 1rem; transition: transform 0.1s; }
+        .add-to-cart-btn:active { transform: scale(0.95); }
+        .buy-now-wa { background: transparent; color: var(--wa-green); border: none; font-weight: 900; text-transform: uppercase; cursor: pointer; font-size: 0.8rem; margin-top: 15px; text-decoration: underline; }
+
+        /* CARRITO FLOTANTE (MÓVIL) */
+        #cart-float-btn {
+            position: fixed; bottom: 30px; right: 30px;
+            background: var(--accent-orange); color: white;
+            width: 65px; height: 65px; border-radius: 50%;
+            display: none; align-items: center; justify-content: center;
+            box-shadow: 0 5px 20px rgba(255,106,0,0.4);
+            z-index: 1500; cursor: pointer;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+        #cart-float-btn.visible { display: flex; }
+        .cart-count { position: absolute; top: 0; right: 0; background: var(--dual-blue); color: white; width: 22px; height: 22px; border-radius: 50%; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; border: 2px solid white; }
 
-        /* Botón CTA Whatsapp */
-        .cta-container { text-align: center; margin-top: 3rem; }
-        .btn-whatsapp-cta { background: #25D366; color: white; padding: 1.1rem 2rem; border-radius: 50px; text-decoration: none; font-size: 1rem; font-weight: 900; cursor: pointer; display: inline-block; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(37,211,102,0.3); }
-        .btn-whatsapp-cta:active { transform: scale(0.95); }
+        /* VENTANA REVISIÓN CARRITO */
+        #cart-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); z-index: 3000;
+            display: none; align-items: center; justify-content: center; padding: 1rem;
+        }
+        .cart-window { background: white; width: 100%; max-width: 450px; border-radius: 25px; overflow: hidden; animation: slideUp 0.3s ease-out; }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .cart-header { background: var(--dual-blue); color: white; padding: 1.2rem; display: flex; justify-content: space-between; align-items: center; }
+        .cart-items { padding: 1rem; max-height: 350px; overflow-y: auto; }
+        .c-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #eee; }
+        .c-item-info { flex-grow: 1; text-align: left; }
+        .c-item-name { font-size: 0.85rem; font-weight: 900; color: var(--dual-blue); }
+        .c-item-price { font-size: 0.8rem; color: var(--accent-orange); }
+        .c-qty-control { display: flex; align-items: center; gap: 8px; }
+        .btn-mini { width: 25px; height: 25px; border-radius: 50%; border: 1px solid #ccc; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+        .count { font-size: 0.9rem; width: 15px; text-align: center; }
+
+        .cart-footer { padding: 1.5rem; background: #f9f9f9; text-align: center; }
+        .total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; font-weight: 900; }
+        .btn-finish { background: var(--wa-green); color: white; width: 100%; padding: 1.1rem; border-radius: 50px; border: none; font-weight: 900; cursor: pointer; font-size: 1rem; box-shadow: 0 4px 15px rgba(37,211,102,0.3); }
+        .btn-empty { background: transparent; color: #999; border: none; font-size: 0.75rem; cursor: pointer; text-decoration: underline; margin-top: 15px; }
+
+        /* ANIMACIÓN +1 */
+        .plus-one { position: fixed; color: var(--accent-orange); font-weight: 900; font-size: 1.2rem; pointer-events: none; z-index: 5000; animation: fadeUp 0.6s ease-out forwards; }
+        @keyframes fadeUp { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-50px); opacity: 0; } }
 
         @media (min-width: 768px) {
             .hero-main-text { font-size: 5rem; }
-            .detail-container { grid-template-columns: 1fr 1fr; align-items: center; }
+            .detail-container { grid-template-columns: 1fr 1fr; align-items: center; text-align: left; }
             .product-grid { grid-template-columns: repeat(3, 1fr); }
             #cat-view .product-grid { grid-template-columns: repeat(4, 1fr); }
         }
 
-        /* Ajuste específico para móvil: 3 productos en línea solo en destacados */
         @media (max-width: 767px) {
-            .logo { font-size: 1.1rem; }
-            .nav-menu { gap: 8px; }
-            .nav-menu a { font-size: 0.7rem; }
-
-            main .product-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 10px;
-                padding: 0;
-            }
-            #cat-view .product-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-            }
-            main .product-card {
-                padding: 10px 5px;
-            }
-            main .product-card h3 {
-                font-size: 0.7rem;
-            }
-            main .price {
-                font-size: 0.8rem;
-            }
-            main .p-img {
-                height: 100px;
-            }
+            main .product-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0; }
+            #cat-view .product-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            main .product-card { padding: 10px 5px; }
+            main .product-card h3 { font-size: 0.7rem; }
+            main .price { font-size: 0.8rem; }
+            main .p-img { height: 100px; }
         }
 
         footer { text-align: center; padding: 4rem; color: #888; font-size: 0.9rem; background: #eee; margin-top: 4rem; }
-    
-    /* CARRITO PROFESIONAL */
-    #cart-btn {
-        position: fixed; bottom: 30px; right: 30px;
-        background: #FF6A00; color: white;
-        width: 65px; height: 65px; border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
-        box-shadow: 0 8px 25px rgba(255, 106, 0, 0.5);
-        cursor: pointer; z-index: 10001; font-size: 1.8rem;
-        transition: transform 0.3s;
-    }
-    #cart-count {
-        position: absolute; top: -2px; right: -2px;
-        background: #081A3A; color: white;
-        width: 24px; height: 24px; border-radius: 50%;
-        font-size: 0.8rem; display: flex; align-items: center; justify-content: center; font-weight: bold;
-        border: 2px solid white;
-    }
-    #cart-overlay {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.85); z-index: 10002;
-        display: none; align-items: center; justify-content: center;
-        backdrop-filter: blur(10px);
-    }
-    .cart-box {
-        background: white; width: 90%; max-width: 450px;
-        border-radius: 20px; padding: 25px; position: relative;
-        font-family: Arial, sans-serif;
-    }
-    .cart-item {
-        display: flex; justify-content: space-between; align-items: center;
-        padding: 12px 0; border-bottom: 1px solid #eee;
-    }
-    .add-to-cart-btn {
-        background: #081A3A; color: white; border: none; padding: 14px;
-        border-radius: 10px; width: 100%; font-weight: bold; cursor: pointer;
-        text-transform: uppercase; margin-top: 15px; font-size: 0.9rem;
-    }
-
-    /* ANIMACIONES Y MODAL AVANZADO */
-    .product-modal {
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        transform: scale(0.9); opacity: 0; visibility: hidden;
-    }
-    input[type="checkbox"]:checked + .product-modal {
-        transform: scale(1); opacity: 1; visibility: visible;
-    }
-    
-    .qty-selector {
-        display: flex; align-items: center; justify-content: center;
-        gap: 15px; margin: 20px 0; background: #f8f9fa;
-        padding: 10px; border-radius: 12px;
-    }
-    .qty-btn-mod {
-        width: 35px; height: 35px; border-radius: 50%;
-        border: 1px solid #ddd; background: white;
-        cursor: pointer; font-weight: bold; font-size: 1.2rem;
-        display: flex; align-items: center; justify-content: center;
-        transition: 0.2s;
-    }
-    .qty-btn-mod:hover { background: var(--dual-blue); color: white; }
-    
-    #cart-btn {
-        animation: bounce 2s infinite;
-    }
-    @keyframes bounce {
-        0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-        40% {transform: translateY(-10px);}
-        60% {transform: translateY(-5px);}
-    }
-</style>
+    </style>
 </head>
 <body>
 
-    <!-- Modales Checkboxes -->
-    <input type="checkbox" id="check-p1"><input type="checkbox" id="check-p2"><input type="checkbox" id="check-p3">
-    <input type="checkbox" id="check-p4"><input type="checkbox" id="check-p5"><input type="checkbox" id="check-p6">
-    <input type="checkbox" id="check-p7"><input type="checkbox" id="check-p8"><input type="checkbox" id="check-p9">
-    <input type="checkbox" id="check-p10"><input type="checkbox" id="check-p11"><input type="checkbox" id="check-p13">
-    <input type="checkbox" id="check-p14"><input type="checkbox" id="check-p15"><input type="checkbox" id="check-p16">
-    <input type="checkbox" id="check-p17"><input type="checkbox" id="check-p18"><input type="checkbox" id="check-p19">
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo"><span class="l-dual">DUAL</span><span class="l-orange">ROBOTICS</span></a>
+            <nav class="nav-menu">
+                <a href="#" class="home-btn">Inicio</a>
+                <a href="#cat-view" class="prod-btn">Catálogo</a>
+                <div id="cart-header-btn" onclick="toggleCart()">🛒 <span id="cart-total-header">$0</span></div>
+            </nav>
+        </div>
+    </header>
 
     <div id="cat-view">
-        <header>
-            <div class="nav-container">
-                <a href="#" class="logo"><span class="l-dual">DUAL</span><span class="l-orange">ROBOTICS</span></a>
-                <nav class="nav-menu">
-                    <a href="#" class="home-btn">Inicio</a>
-                    <a href="https://wa.me/573206229042">Contacto</a>
-                </nav>
-            </div>
-        </header>
-
         <div class="section">
             <div class="section-header"><h2>Catálogo Completo</h2></div>
-            <div class="product-grid">
-                <div class="product-card"><label for="check-p1"></label><div class="p-img"><img src="https://share.zapia.com/63tgzrphr7vbxc3iyykfen"></div><h3>Motor TT Plástico</h3><div class="price">$12.000</div></div>
-                <div class="product-card"><label for="check-p3"></label><div class="p-img"><img src="https://share.zapia.com/9rvs3y82mt436hnoz1qrc2"></div><h3>Sensor Ultrasónico</h3><div class="price">$16.000</div></div>
-                <div class="product-card"><label for="check-p4"></label><div class="p-img"><img src="https://share.zapia.com/kirfhfkzs2vl0bbkp95l9k"></div><h3>Módulo L298N</h3><div class="price">$20.900</div></div>
-                <div class="product-card"><label for="check-p7"></label><div class="p-img"><img src="https://share.zapia.com/44puhtxcrluxr0973mpl6m"></div><h3>Arduino Nano</h3><div class="price">$48.900</div></div>
-                <div class="product-card"><label for="check-p8"></label><div class="p-img"><img src="https://share.zapia.com/on8mttj4jofgyx17y16bf3"></div><h3>Servo SG90</h3><div class="price">$16.300</div></div>
-                <div class="product-card"><label for="check-p9"></label><div class="p-img"><img src="https://share.zapia.com/krty2s0s25794w98mzikv5"></div><h3>Batería 18650</h3><div class="price">$24.500</div></div>
-                <div class="product-card"><label for="check-p10"></label><div class="p-img"><img src="https://share.zapia.com/4t0gn0r226j2kvufo7neps"></div><h3>Portabaterías (3 celdas)</h3><div class="price">$11.000</div></div>
-                <div class="product-card"><label for="check-p11"></label><div class="p-img"><img src="https://share.zapia.com/gebtkd15mtujhxcjot6d9i"></div><h3>Protoboard 400</h3><div class="price">$10.100</div></div>
-                <div class="product-card"><label for="check-p13"></label><div class="p-img"><img src="https://share.zapia.com/8cf4ibcmkk47e9z29pallr"></div><h3>Módulo TP4056</h3><div class="price">$8.500</div></div>
-                <div class="product-card"><label for="check-p14"></label><div class="p-img"><img src="https://share.zapia.com/y7n83iryllg4xw3c0ong1r"></div><h3>Sensor TCRT5000</h3><div class="price">$21.800</div></div>
-                <div class="product-card"><label for="check-p15"></label><div class="p-img"><img src="https://share.zapia.com/v0vj4dlt5h2o5m4kn3wznn"></div><h3>Rueda Motor TT</h3><div class="price">$8.500</div></div>
-                <div class="product-card"><label for="check-p16"></label><div class="p-img"><img src="https://share.zapia.com/5w1lzmj0lsqoyckb2jw7ay"></div><h3>Cable AWG22</h3><div class="price">$2.000</div></div>
-                <div class="product-card"><label for="check-p5"></label><div class="p-img"><img src="https://share.zapia.com/rnj769r4frbkk91xq940jq"></div><h3>Bluetooth HC-06</h3><div class="price">$27.700</div></div>
-                <div class="product-card"><label for="check-p2"></label><div class="p-img"><img src="https://share.zapia.com/h9gdxo9zyxsrl04aiu3qzl"></div><h3>Motor TT Metálico</h3><div class="price">$25.000</div></div>
-                <div class="product-card"><label for="check-p6"></label><div class="p-img"><img src="https://share.zapia.com/zjv4uccl9tz011oyu8bgpq"></div><h3>Arduino Uno R3</h3><div class="price">$57.600</div></div>
-                <div class="product-card"><label for="check-p17"></label><div class="p-img"><img src="https://share.zapia.com/tvvdod7usflcks649snsu7"></div><h3>Dupont Macho-Macho</h3><div class="price">$8.500</div></div>
-                <div class="product-card"><label for="check-p18"></label><div class="p-img"><img src="https://share.zapia.com/021jkjehm7go8rivpag6zx"></div><h3>Dupont Hembra-Hembra</h3><div class="price">$8.500</div></div>
-                <div class="product-card"><label for="check-p19"></label><div class="p-img"><img src="https://share.zapia.com/k6videadpvt4d4yzppba6l"></div><h3>Dupont Macho-Hembra</h3><div class="price">$8.500</div></div>
-            </div>
+            <div class="product-grid" id="full-catalog"></div>
         </div>
     </div>
 
     <main>
-        <header>
-            <div class="nav-container">
-                <a href="#" class="logo"><span class="l-dual">DUAL</span><span class="l-orange">ROBOTICS</span></a>
-                <nav class="nav-menu">
-                    <a href="#" class="home-btn">Inicio</a>
-                    <a href="#cat-view" class="prod-btn">Productos</a>
-                    <a href="https://wa.me/573206229042">Contacto</a>
-                </nav>
-            </div>
-        </header>
-
         <div class="hero">
             <div>
                 <div class="hero-sub">Componentes de Robótica</div>
@@ -291,371 +204,222 @@
                 </div>
             </div>
         </div>
-
         <div class="section">
             <div class="section-header"><h2>Destacados</h2></div>
-            <div class="product-grid">
-                <div class="product-card"><label for="check-p6"></label><div class="p-img"><img src="https://share.zapia.com/zjv4uccl9tz011oyu8bgpq"></div><h3>Arduino Uno R3</h3><div class="price">$57.600</div></div>
-                <div class="product-card"><label for="check-p2"></label><div class="p-img"><img src="https://share.zapia.com/h9gdxo9zyxsrl04aiu3qzl"></div><h3>Motor TT Metálico</h3><div class="price">$25.000</div></div>
-                <div class="product-card"><label for="check-p5"></label><div class="p-img"><img src="https://share.zapia.com/rnj769r4frbkk91xq940jq"></div><h3>Bluetooth HC-06</h3><div class="price">$27.700</div></div>
-            </div>
-            <div class="cta-container">
-                <a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics,%20necesito%20t%C3%BA%20ayuda!" class="btn-whatsapp-cta">ESCRÍBENOS POR WHATSAPP</a>
-            </div>
+            <div class="product-grid" id="featured-grid"></div>
         </div>
     </main>
 
-    <!-- Modales -->
-    <div class="product-modal modal-p1"><label for="check-p1" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/63tgzrphr7vbxc3iyykfen" style="max-width:45%"><img src="https://share.zapia.com/blu8yg5mrdpbkiqkx4mcru" style="max-width:45%; margin-left:5%"></div><div><h2>MOTOR TT PLÁSTICO</h2><div class="price">$12.000</div>
-        <div class="qty-selector">
-            <button class="qty-btn-mod" onclick="changeModalQty(this, -1)">-</button>
-            <span class="modal-qty" style="font-weight:900; font-size:1.3rem;">1</span>
-            <button class="qty-btn-mod" onclick="changeModalQty(this, 1)">+</button>
+    <div id="cart-float-btn" onclick="toggleCart()">
+        <span style="font-size:1.5rem">🛒</span>
+        <div class="cart-count" id="cart-count-float">0</div>
+    </div>
+
+    <div id="product-modal" class="product-modal">
+        <div class="close-modal-btn" onclick="closeModal()">×</div>
+        <div id="modal-content" class="detail-container"></div>
+    </div>
+
+    <div id="cart-overlay" onclick="if(event.target==this) toggleCart()">
+        <div class="cart-window">
+            <div class="cart-header">
+                <h2>Tu Pedido</h2>
+                <div class="close-btn" onclick="toggleCart()">×</div>
+            </div>
+            <div class="cart-items" id="cart-items-list"></div>
+            <div class="cart-footer">
+                <div class="total-row">
+                    <span>TOTAL ESTIMADO:</span>
+                    <span id="cart-total-final">$0</span>
+                </div>
+                <button class="btn-finish" onclick="checkoutWA()">FINALIZAR POR WHATSAPP</button>
+                <button class="btn-empty" onclick="clearCart()">🗑️ Vaciar todo el carrito</button>
+            </div>
         </div>
-        <button class="add-cart-btn" onclick="addAdvancedToCart('MOTOR TT PLÁSTICO', 12000, this)">Añadir al Carrito</button>
-    <p class="p-desc">Diseñado para la agilidad. Este motor ofrece una excelente relación entre peso y velocidad, siendo la opción ideal para robots ligeros, velocistas y seguidores de línea que necesitan reacciones rápidas.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20MOTOR%20TT%20PL%C3%81STICO%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p2"><label for="check-p2" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/h9gdxo9zyxsrl04aiu3qzl" style="max-width:45%"><img src="https://share.zapia.com/puiy7uj9epnoruglpyvsyn" style="max-width:45%; margin-left:5%"></div><div><h2>MOTOR TT METÁLICO</h2><div class="price">$25.000</div>
-        <div class="qty-selector">
-            <button class="qty-btn-mod" onclick="changeModalQty(this, -1)">-</button>
-            <span class="modal-qty" style="font-weight:900; font-size:1.3rem;">1</span>
-            <button class="qty-btn-mod" onclick="changeModalQty(this, 1)">+</button>
-        </div>
-        <button class="add-cart-btn" onclick="addAdvancedToCart('MOTOR TT METÁLICO', 25000, this)">Añadir al Carrito</button>
-    <p class="p-desc">Potencia y resistencia extrema. Equipado con engranajes de acero para soportar cargas pesadas y ofrecer el máximo torque en terrenos difíciles o proyectos de alta exigencia.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20MOTOR%20TT%20MET%C3%81LICO%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p3"><label for="check-p3" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/9rvs3y82mt436hnoz1qrc2" style="max-width:45%"><img src="https://share.zapia.com/d7sbux0q0d6pxom2mwl6w0" style="max-width:45%; margin-left:5%"></div><div><h2>SENSOR ULTRASÓNICO</h2><div class="price">$16.000</div>
-        <div class="qty-selector">
-            <button class="qty-btn-mod" onclick="changeModalQty(this, -1)">-</button>
-            <span class="modal-qty" style="font-weight:900; font-size:1.3rem;">1</span>
-            <button class="qty-btn-mod" onclick="changeModalQty(this, 1)">+</button>
-        </div>
-        <button class="add-cart-btn" onclick="addAdvancedToCart('SENSOR ULTRASÓNICO', 16000, this)">Añadir al Carrito</button>
-    <p class="p-desc">El "ojo" de tu robot. Permite detectar obstáculos y medir distancias con precisión mediante ondas de ultrasonido.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20SENSOR%20ULTRAS%C3%93NICO%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p4"><label for="check-p4" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/kirfhfkzs2vl0bbkp95l9k" style="max-width:100%"></div><div><h2>MÓDULO L298N</h2><div class="price">$20.900</div>
-        <div class="qty-selector">
-            <button class="qty-btn-mod" onclick="changeModalQty(this, -1)">-</button>
-            <span class="modal-qty" style="font-weight:900; font-size:1.3rem;">1</span>
-            <button class="qty-btn-mod" onclick="changeModalQty(this, 1)">+</button>
-        </div>
-        <button class="add-cart-btn" onclick="addAdvancedToCart('MÓDULO L298N', 20900, this)">Añadir al Carrito</button>
-    <p class="p-desc">Driver de potencia esencial para controlar la velocidad y el sentido de giro de hasta dos motores de corriente continua simultáneamente.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20M%C3%93DULO%20L298N%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p5"><label for="check-p5" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/rnj769r4frbkk91xq940jq" style="max-width:45%"><img src="https://share.zapia.com/k7dys60ui2tb64a72w14hz" style="max-width:45%; margin-left:5%"></div><div><h2>BLUETOOTH HC-06</h2><div class="price">$27.700</div>
-        <div class="qty-selector">
-            <button class="qty-btn-mod" onclick="changeModalQty(this, -1)">-</button>
-            <span class="modal-qty" style="font-weight:900; font-size:1.3rem;">1</span>
-            <button class="qty-btn-mod" onclick="changeModalQty(this, 1)">+</button>
-        </div>
-        <button class="add-cart-btn" onclick="addAdvancedToCart('BLUETOOTH HC-06', 27700, this)">Añadir al Carrito</button>
-    <p class="p-desc">Conecta tus proyectos a tu celular. Permite el control inalámbrico de tus robots mediante una conexión estable y fácil de configurar.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20BLUETOOTH%20HC-06%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p6"><label for="check-p6" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/zjv4uccl9tz011oyu8bgpq" style="max-width:45%"><img src="https://share.zapia.com/qpl00ktpwizgn9r588jv1e" style="max-width:45%; margin-left:5%"></div><div><h2>ARDUINO UNO R3</h2><div class="price">$57.600</div>
-        <div class="qty-selector">
-            <button class="qty-btn-mod" onclick="changeModalQty(this, -1)">-</button>
-            <span class="modal-qty" style="font-weight:900; font-size:1.3rem;">1</span>
-            <button class="qty-btn-mod" onclick="changeModalQty(this, 1)">+</button>
-        </div>
-        <button class="add-cart-btn" onclick="addAdvancedToCart('ARDUINO UNO R3', 57600, this)">Añadir al Carrito</button>
-    <p class="p-desc">La placa más versátil para aprender electrónica y programar tus propios robots. Ideal tanto para principiantes como para expertos en proyectos de automatización.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20ARDUINO%20UNO%20R3%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p7"><label for="check-p7" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/44puhtxcrluxr0973mpl6m" style="max-width:45%"><img src="https://share.zapia.com/8imhw1bjnnjf0v3ptfoaz6" style="max-width:45%; margin-left:5%"></div><div><h2>ARDUINO NANO</h2><div class="price">$48.900</div>
-        <div class="qty-selector">
-            <button class="qty-btn-mod" onclick="changeModalQty(this, -1)">-</button>
-            <span class="modal-qty" style="font-weight:900; font-size:1.3rem;">1</span>
-            <button class="qty-btn-mod" onclick="changeModalQty(this, 1)">+</button>
-        </div>
-        <button class="add-cart-btn" onclick="addAdvancedToCart('ARDUINO NANO', 48900, this)">Añadir al Carrito</button>
-    <p class="p-desc">Todo el poder del Arduino Uno en un tamaño ultra compacto. Perfecto para proyectos pequeños, wearables y prototipos que requieren poco espacio.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20ARDUINO%20NANO%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p8"><label for="check-p8" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/on8mttj4jofgyx17y16bf3" style="max-width:45%"><img src="https://share.zapia.com/k9bwfm2zicns4a1vly5s5o" style="max-width:45%; margin-left:5%"></div><div><h2>SERVOMOTOR SG90</h2><div class="price">$16.300</div>
-        <div class="qty-selector">
-            <button class="qty-btn-mod" onclick="changeModalQty(this, -1)">-</button>
-            <span class="modal-qty" style="font-weight:900; font-size:1.3rem;">1</span>
-            <button class="qty-btn-mod" onclick="changeModalQty(this, 1)">+</button>
-        </div>
-        <button class="add-cart-btn" onclick="addAdvancedToCart('SERVOMOTOR SG90', 16300, this)">Añadir al Carrito</button>
-    <p class="p-desc">Pequeño, ligero y preciso. Ideal para mover brazos robóticos, timones o cualquier mecanismo que requiera un control de ángulo exacto.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20SERVOMOTOR%20SG90%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p9"><label for="check-p9" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/krty2s0s25794w98mzikv5" style="max-width:100%"></div><div><h2>BATERÍA 18650</h2><div class="price">$24.500</div>
-        <div class="qty-selector">
-            <button class="qty-btn-mod" onclick="changeModalQty(this, -1)">-</button>
-            <span class="modal-qty" style="font-weight:900; font-size:1.3rem;">1</span>
-            <button class="qty-btn-mod" onclick="changeModalQty(this, 1)">+</button>
-        </div>
-        <button class="add-cart-btn" onclick="addAdvancedToCart('BATERÍA 18650', 24500, this)">Añadir al Carrito</button>
-    <p class="p-desc">Celda de litio recargable de alta capacidad (1700mAh). Proporciona la energía necesaria para que tus proyectos funcionen durante horas sin interrupciones.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20BATER%C3%8DA%2018650%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p10"><label for="check-p10" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/4t0gn0r226j2kvufo7neps" style="max-width:100%"></div><div><h2>PORTABATERÍAS (3 CELDAS)</h2><div class="price">$11.000</div>
-        <div class="qty-selector">
-            <button class="qty-btn-mod" onclick="changeModalQty(this, -1)">-</button>
-            <span class="modal-qty" style="font-weight:900; font-size:1.3rem;">1</span>
-            <button class="qty-btn-mod" onclick="changeModalQty(this, 1)">+</button>
-        </div>
-        <button class="add-cart-btn" onclick="addAdvancedToCart('PORTABATERÍAS (3 CELDAS)', 11000, this)">Añadir al Carrito</button>
-    <p class="p-desc">Soporte robusto diseñado para conectar tres baterías 18650 en serie, proporcionando el voltaje ideal para motores y placas.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20PORTABATER%C3%8DAS%20(3%20CELDAS)%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p11"><label for="check-p11" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/gebtkd15mtujhxcjot6d9i" style="max-width:100%"></div><div><h2>PROTOBOARD 400</h2><div class="price">$10.100</div>
-        <div class="qty-selector">
-            <button class="qty-btn-mod" onclick="changeModalQty(this, -1)">-</button>
-            <span class="modal-qty" style="font-weight:900; font-size:1.3rem;">1</span>
-            <button class="qty-btn-mod" onclick="changeModalQty(this, 1)">+</button>
-        </div>
-        <button class="add-cart-btn" onclick="addAdvancedToCart('PROTOBOARD 400', 10100, this)">Añadir al Carrito</button>
-    <p class="p-desc">El tablero ideal para prototipar. Permite armar y probar tus circuitos rápidamente sin necesidad de soldar cables.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20PROTOBOARD%20400%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p13"><label for="check-p13" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/8cf4ibcmkk47e9z29pallr" style="max-width:45%"><img src="https://share.zapia.com/wkbdj7l8n7biaq0gya5w50" style="max-width:45%; margin-left:5%"></div><div><h2>MÓDULO TP4056</h2><div class="price">$8.500</div>
-        <div class="qty-selector">
-            <button class="qty-btn-mod" onclick="changeModalQty(this, -1)">-</button>
-            <span class="modal-qty" style="font-weight:900; font-size:1.3rem;">1</span>
-            <button class="qty-btn-mod" onclick="changeModalQty(this, 1)">+</button>
-        </div>
-        <button class="add-cart-btn" onclick="addAdvancedToCart('MÓDULO TP4056', 8500, this)">Añadir al Carrito</button>
-    <p class="p-desc">Cargador inteligente para baterías de litio. Incluye protección contra sobrecargas para mantener tus baterías seguras y duraderas.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20M%C3%93DULO%20TP4056%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p14"><label for="check-p14" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/y7n83iryllg4xw3c0ong1r" style="max-width:45%"><img src="https://share.zapia.com/1tby2eml4158huxxi2qesd" style="max-width:45%; margin-left:5%"></div><div><h2>SENSOR TCRT5000</h2><div class="price">$21.800</div>
-        <div class="qty-selector">
-            <button class="qty-btn-mod" onclick="changeModalQty(this, -1)">-</button>
-            <span class="modal-qty" style="font-weight:900; font-size:1.3rem;">1</span>
-            <button class="qty-btn-mod" onclick="changeModalQty(this, 1)">+</button>
-        </div>
-        <button class="add-cart-btn" onclick="addAdvancedToCart('SENSOR TCRT5000', 21800, this)">Añadir al Carrito</button>
-    <p class="p-desc">Sensor infrarrojo de alta precisión, perfecto para robots seguidores de línea o detección de objetos a corta distancia.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20SENSOR%20TCRT5000%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p15"><label for="check-p15" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/v0vj4dlt5h2o5m4kn3wznn" style="max-width:100%"></div><div><h2>RUEDA MOTOR TT</h2><div class="price">$8.500</div>
-        <div class="qty-selector">
-            <button class="qty-btn-mod" onclick="changeModalQty(this, -1)">-</button>
-            <span class="modal-qty" style="font-weight:900; font-size:1.3rem;">1</span>
-            <button class="qty-btn-mod" onclick="changeModalQty(this, 1)">+</button>
-        </div>
-        <button class="add-cart-btn" onclick="addAdvancedToCart('RUEDA MOTOR TT', 8500, this)">Añadir al Carrito</button>
-    <p class="p-desc">Rueda de goma con excelente tracción, diseñada para ajustarse perfectamente al eje de cualquier motor tipo TT.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20RUEDA%20MOTOR%20TT%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p16"><label for="check-p16" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/5w1lzmj0lsqoyckb2jw7ay" style="max-width:100%"></div><div><h2>CABLE AWG22</h2><div class="price">$2.000</div>
-        <div class="qty-selector">
-            <button class="qty-btn-mod" onclick="changeModalQty(this, -1)">-</button>
-            <span class="modal-qty" style="font-weight:900; font-size:1.3rem;">1</span>
-            <button class="qty-btn-mod" onclick="changeModalQty(this, 1)">+</button>
-        </div>
-        <button class="add-cart-btn" onclick="addAdvancedToCart('CABLE AWG22', 2000, this)">Añadir al Carrito</button>
-    <p class="p-desc">Cable flexible de alta calidad, ideal para realizar conexiones internas seguras y organizadas en todos tus prototipos.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20CABLE%20AWG22%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p17"><label for="check-p17" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/tvvdod7usflcks649snsu7" style="max-width:100%"></div><div><h2>DUPONT MACHO-MACHO (X20)</h2><div class="price">$8.500</div>
-        <div class="qty-selector">
-            <button class="qty-btn-mod" onclick="changeModalQty(this, -1)">-</button>
-            <span class="modal-qty" style="font-weight:900; font-size:1.3rem;">1</span>
-            <button class="qty-btn-mod" onclick="changeModalQty(this, 1)">+</button>
-        </div>
-        <button class="add-cart-btn" onclick="addAdvancedToCart('DUPONT MACHO-MACHO (X20)', 8500, this)">Añadir al Carrito</button>
-    <p class="p-desc">Paquete de 20 cables de conexión rápida, ideales para prototipos en protoboard y conexiones seguras entre módulos electrónicos.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20DUPONT%20MACHO-MACHO%20(X20)%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p18"><label for="check-p18" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/021jkjehm7go8rivpag6zx" style="max-width:100%"></div><div><h2>DUPONT HEMBRA-HEMBRA (X20)</h2><div class="price">$8.500</div>
-        <div class="qty-selector">
-            <button class="qty-btn-mod" onclick="changeModalQty(this, -1)">-</button>
-            <span class="modal-qty" style="font-weight:900; font-size:1.3rem;">1</span>
-            <button class="qty-btn-mod" onclick="changeModalQty(this, 1)">+</button>
-        </div>
-        <button class="add-cart-btn" onclick="addAdvancedToCart('DUPONT HEMBRA-HEMBRA (X20)', 8500, this)">Añadir al Carrito</button>
-    <p class="p-desc">Set de 20 cables versátiles para interconectar sensores y módulos de forma directa y ordenada sin necesidad de soldadura.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20DUPONT%20HEMBRA-HEMBRA%20(X20)%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p19"><label for="check-p19" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/k6videadpvt4d4yzppba6l" style="max-width:100%"></div><div><h2>DUPONT MACHO-HEMBRA (X20)</h2><div class="price">$8.500</div>
-        <div class="qty-selector">
-            <button class="qty-btn-mod" onclick="changeModalQty(this, -1)">-</button>
-            <span class="modal-qty" style="font-weight:900; font-size:1.3rem;">1</span>
-            <button class="qty-btn-mod" onclick="changeModalQty(this, 1)">+</button>
-        </div>
-        <button class="add-cart-btn" onclick="addAdvancedToCart('DUPONT MACHO-HEMBRA (X20)', 8500, this)">Añadir al Carrito</button>
-    <p class="p-desc">Pack de 20 cables esenciales para extender conexiones desde tu placa de control hacia sensores externos con total fiabilidad.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20DUPONT%20MACHO-HEMBRA%20(X20)%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
+    </div>
 
     <footer>&copy; 2026 DUAL ROBOTICS — Tecnología para el Futuro</footer>
 
-<style>
-  .zapia-cta {
-    position: fixed;
-    inset-block-end: max(16px, env(safe-area-inset-bottom, 16px));
-    inset-inline-end: max(16px, env(safe-area-inset-right, 16px));
-    z-index: 2147483600;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 16px;
-    border-radius: 999px;
-    background: linear-gradient(135deg, #11998E 0%, #23C1AE 55%, #38EF7D 100%);
-    color: #fff;
-    text-decoration: none;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1.2;
-    box-shadow: 0 8px 24px rgba(17, 153, 142, 0.28), 0 2px 6px rgba(0, 0, 0, 0.12);
-    transition: padding 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  .zapia-cta:hover, .zapia-cta:focus-visible {
-    padding: 12px 18px;
-    transform: translateY(-1px);
-    box-shadow: 0 12px 28px rgba(17, 153, 142, 0.34), 0 3px 8px rgba(0, 0, 0, 0.14);
-    outline: none;
-  }
-  .zapia-cta__icon { display: inline-flex; align-items: center; justify-content: center; }
-  .zapia-cta__copy { display: inline-flex; flex-direction: column; align-items: flex-start; }
-  .zapia-cta__tagline {
-    display: none;
-    font-weight: 400;
-    font-size: 11px;
-    opacity: 0.92;
-    margin-top: 1px;
-  }
-  .zapia-cta:hover .zapia-cta__tagline,
-  .zapia-cta:focus-visible .zapia-cta__tagline { display: inline; }
-  @media (max-width: 480px) {
-    .zapia-cta { padding: 10px; gap: 0; }
-    .zapia-cta__copy { display: none; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .zapia-cta { transition: none; }
-    .zapia-cta:hover, .zapia-cta:focus-visible { transform: none; }
-  }
+    <script>
+        const products = [
+            {id:1, name:"Motor TT Plástico", price:12000, img:"https://share.zapia.com/63tgzrphr7vbxc3iyykfen", desc:"Diseñado para la agilidad. Ideal para robots ligeros y seguidores de línea."},
+            {id:2, name:"Motor TT Metálico", price:25000, img:"https://share.zapia.com/h9gdxo9zyxsrl04aiu3qzl", desc:"Potencia extrema. Engranajes de acero para soportar cargas pesadas y máximo torque."},
+            {id:3, name:"Sensor Ultrasónico", price:16000, img:"https://share.zapia.com/9rvs3y82mt436hnoz1qrc2", desc:"El ojo de tu robot. Detecta obstáculos y mide distancias con precisión."},
+            {id:4, name:"Módulo L298N", price:20900, img:"https://share.zapia.com/kirfhfkzs2vl0bbkp95l9k", desc:"Driver esencial para controlar velocidad y giro de dos motores DC."},
+            {id:5, name:"Bluetooth HC-06", price:27700, img:"https://share.zapia.com/rnj769r4frbkk91xq940jq", desc:"Control inalámbrico desde tu celular con conexión estable."},
+            {id:6, name:"Arduino Uno R3", price:57600, img:"https://share.zapia.com/zjv4uccl9tz011oyu8bgpq", desc:"La placa más versátil para aprender y programar robots."},
+            {id:7, name:"Arduino Nano", price:48900, img:"https://share.zapia.com/44puhtxcrluxr0973mpl6m", desc:"Todo el poder de Arduino en un tamaño ultra compacto."},
+            {id:8, name:"Servo SG90", price:16300, img:"https://share.zapia.com/on8mttj4jofgyx17y16bf3", desc:"Precisión para brazos robóticos y mecanismos de ángulo exacto."},
+            {id:9, name:"Batería 18650", price:24500, img:"https://share.zapia.com/krty2s0s25794w98mzikv5", desc:"Celda de litio recargable de 1700mAh para largas horas de uso."},
+            {id:10, name:"Portabaterías (3 celdas)", price:11000, img:"https://share.zapia.com/4t0gn0r226j2kvufo7neps", desc:"Conecta 3 baterías 18650 en serie para el voltaje ideal."},
+            {id:11, name:"Protoboard 400", price:10100, img:"https://share.zapia.com/gebtkd15mtujhxcjot6d9i", desc:"Tablero ideal para prototipar sin necesidad de soldar."},
+            {id:13, name:"Módulo TP4056", price:8500, img:"https://share.zapia.com/8cf4ibcmkk47e9z29pallr", desc:"Cargador inteligente con protección para baterías de litio."},
+            {id:14, name:"Sensor TCRT5000", price:21800, img:"https://share.zapia.com/y7n83iryllg4xw3c0ong1r", desc:"Infrarrojo de alta precisión para seguimiento de línea."},
+            {id:15, name:"Rueda Motor TT", price:8500, img:"https://share.zapia.com/v0vj4dlt5h2o5m4kn3wznn", desc:"Goma con excelente tracción para cualquier motor tipo TT."},
+            {id:16, name:"Cable AWG22", price:2000, img:"https://share.zapia.com/5w1lzmj0lsqoyckb2jw7ay", desc:"Flexible y de alta calidad para conexiones internas seguras."},
+            {id:17, name:"Dupont Macho-Macho (X20)", price:8500, img:"https://share.zapia.com/tvvdod7usflcks649snsu7", desc:"Pack de 20 cables para conexiones seguras en protoboard."},
+            {id:18, name:"Dupont Hembra-Hembra (X20)", price:8500, img:"https://share.zapia.com/021jkjehm7go8rivpag6zx", desc:"Pack de 20 cables para interconectar sensores y módulos."},
+            {id:19, name:"Dupont Macho-Hembra (X20)", price:8500, img:"https://share.zapia.com/k6videadpvt4d4yzppba6l", desc:"Pack de 20 cables para extender conexiones a sensores externos."}
+        ];
 
-    /* CARRITO PROFESIONAL */
-    #cart-btn {
-        position: fixed; bottom: 30px; right: 30px;
-        background: #FF6A00; color: white;
-        width: 65px; height: 65px; border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
-        box-shadow: 0 8px 25px rgba(255, 106, 0, 0.5);
-        cursor: pointer; z-index: 10001; font-size: 1.8rem;
-        transition: transform 0.3s;
-    }
-    #cart-count {
-        position: absolute; top: -2px; right: -2px;
-        background: #081A3A; color: white;
-        width: 24px; height: 24px; border-radius: 50%;
-        font-size: 0.8rem; display: flex; align-items: center; justify-content: center; font-weight: bold;
-        border: 2px solid white;
-    }
-    #cart-overlay {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.85); z-index: 10002;
-        display: none; align-items: center; justify-content: center;
-        backdrop-filter: blur(10px);
-    }
-    .cart-box {
-        background: white; width: 90%; max-width: 450px;
-        border-radius: 20px; padding: 25px; position: relative;
-        font-family: Arial, sans-serif;
-    }
-    .cart-item {
-        display: flex; justify-content: space-between; align-items: center;
-        padding: 12px 0; border-bottom: 1px solid #eee;
-    }
-    .add-to-cart-btn {
-        background: #081A3A; color: white; border: none; padding: 14px;
-        border-radius: 10px; width: 100%; font-weight: bold; cursor: pointer;
-        text-transform: uppercase; margin-top: 15px; font-size: 0.9rem;
-    }
+        let cart = JSON.parse(localStorage.getItem('dual_cart')) || [];
+        let currentModalQty = 1;
 
-    /* ANIMACIONES Y MODAL AVANZADO */
-    .product-modal {
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        transform: scale(0.9); opacity: 0; visibility: hidden;
-    }
-    input[type="checkbox"]:checked + .product-modal {
-        transform: scale(1); opacity: 1; visibility: visible;
-    }
-    
-    .qty-selector {
-        display: flex; align-items: center; justify-content: center;
-        gap: 15px; margin: 20px 0; background: #f8f9fa;
-        padding: 10px; border-radius: 12px;
-    }
-    .qty-btn-mod {
-        width: 35px; height: 35px; border-radius: 50%;
-        border: 1px solid #ddd; background: white;
-        cursor: pointer; font-weight: bold; font-size: 1.2rem;
-        display: flex; align-items: center; justify-content: center;
-        transition: 0.2s;
-    }
-    .qty-btn-mod:hover { background: var(--dual-blue); color: white; }
-    
-    #cart-btn {
-        animation: bounce 2s infinite;
-    }
-    @keyframes bounce {
-        0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-        40% {transform: translateY(-10px);}
-        60% {transform: translateY(-5px);}
-    }
-</style>
-<!-- zapia-site-footer:v1 -->
-<footer style="text-align:center; padding:24px 16px; font-size:0.85rem; color:#6b6b6b; line-height:1.5;">
-  <div>
-    <a href="https://zapia.com" style="color:inherit; text-decoration:none;">Made with <svg viewBox="0 0 57 56" width="1em" height="1em" style="vertical-align:middle;" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path opacity="0.9" d="M25.8676 36.4956C37.9264 36.4956 47.702 26.707 47.702 14.6321H4.0332C4.0332 26.707 13.8088 36.4956 25.8676 36.4956Z" fill="url(#zapia-grad-0)"/><path opacity="0.9" d="M39.3753 44.4023C49.8885 38.4879 53.6229 25.1593 47.7164 14.632L9.64478 36.0502C15.5513 46.5774 28.8622 50.3168 39.3753 44.4023Z" fill="url(#zapia-grad-1)"/><defs><linearGradient id="zapia-grad-0" x1="43.6468" y1="13.397" x2="44.7225" y2="41.4747" gradientUnits="userSpaceOnUse"><stop stop-color="#11998E"/><stop offset="0.536458" stop-color="#23C1AE" stop-opacity="0.6"/><stop offset="1" stop-color="#38EF7D" stop-opacity="0.29"/></linearGradient><linearGradient id="zapia-grad-1" x1="46.7232" y1="12.7918" x2="49.269" y2="54.5334" gradientUnits="userSpaceOnUse"><stop stop-color="#11998E"/><stop offset="0.536458" stop-color="#23C1AE" stop-opacity="0.6"/><stop offset="1" stop-color="#38EF7D" stop-opacity="0.29"/></linearGradient></defs></svg> Dual Robotics</a>
-  </div>
-  <div style="max-width:540px; margin:8px auto 0; font-size:0.75rem; opacity:0.85;">
-    Esta página fue publicada por un usuario de Dual Robotics. Su contenido no fue escrito, revisado ni respaldado por Dual Robotics.
-  </div>
-</footer>
+        function format(num) { return '$' + num.toLocaleString('de-DE'); }
 
-<div id="cart-btn" onclick="toggleCart()" style="display:none">🛒<div id="cart-count">0</div></div>
-<div id="cart-overlay" onclick="if(event.target===this)toggleCart()">
-    <div class="cart-box">
-        <h2 style="color:#081A3A; text-align:center; margin-top:0;">Tu Pedido</h2>
-        <div id="cart-list" style="max-height:300px; overflow-y:auto; margin-bottom:20px;"></div>
-        <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1.2rem; border-top:2px solid #eee; padding-top:15px;">
-            <span>TOTAL:</span><span id="cart-total">$0</span>
-        </div>
-        <button onclick="sendWhatsApp()" style="background:#25D366; color:white; width:100%; padding:18px; border:none; border-radius:12px; font-weight:bold; cursor:pointer; margin-top:20px; font-size:1rem;">FINALIZAR PEDIDO POR WHATSAPP</button>
-        <button onclick="toggleCart()" style="width:100%; margin-top:15px; border:none; background:none; color:#666; cursor:pointer; font-weight:bold;">Seguir comprando</button>
-    </div>
-</div>
+        function renderGrids() {
+            const full = document.getElementById('full-catalog');
+            const feat = document.getElementById('featured-grid');
+            full.innerHTML = feat.innerHTML = '';
+            
+            products.forEach(p => {
+                const card = `<div class="product-card">
+                    <div class="p-img" onclick="openProduct(${p.id})"><img src="${p.img}"></div>
+                    <h3 onclick="openProduct(${p.id})">${p.name}</h3>
+                    <div class="price">${format(p.price)}</div>
+                </div>`;
+                full.innerHTML += card;
+                if([6, 2, 5].includes(p.id)) feat.innerHTML += card;
+            });
+        }
 
-<script>
-    let cart = JSON.parse(localStorage.getItem("cart_dr") || "[]");
-    function update() {
-        const count = cart.reduce((s, i) => s + i.q, 0);
-        document.getElementById("cart-btn").style.display = count > 0 ? "flex" : "none";
-        document.getElementById("cart-count").innerText = count;
-        const list = document.getElementById("cart-list");
-        let total = 0;
-        list.innerHTML = "";
-        cart.forEach(i => {
-            total += i.p * i.q;
-            list.innerHTML += `<div class="cart-item"><span>${i.q}x ${i.n}</span><span>$${(i.p*i.q).toLocaleString()}</span></div>`;
-        });
-        document.getElementById("cart-total").innerText = "$" + total.toLocaleString();
-    }
-    function addToCart(n, p) {
-        const item = cart.find(i => i.n === n);
-        if(item) item.q++; else cart.push({n, p, q: 1});
-        localStorage.setItem("cart_dr", JSON.stringify(cart));
-        update();
-        alert(n + " añadido al carrito");
-    }
-    function toggleCart() {
-        const o = document.getElementById("cart-overlay");
-        o.style.display = o.style.display === "flex" ? "none" : "flex";
-    }
-    function sendWhatsApp() {
-        let text = "Hola Dual Robotics, quiero pedir:\n\n";
-        cart.forEach(i => text += `- ${i.q}x ${i.n} ($${(i.p*i.q).toLocaleString()})\n`);
-        const total = cart.reduce((s, i) => s + (i.p*i.q), 0);
-        text += `\n*TOTAL: $${total.toLocaleString()}*`;
-        window.open("https://wa.me/573206229042?text=" + encodeURIComponent(text));
-    }
-    window.onload = update;
-</script>
+        function openProduct(id) {
+            const p = products.find(x => x.id === id);
+            currentModalQty = 1;
+            const inCart = cart.find(x => x.id === id);
+            const hint = inCart ? `<div style="font-size:0.7rem; color:#888; margin-top:10px;">Ya tienes ${inCart.qty} en el carrito</div>` : '';
+            
+            document.getElementById('modal-content').innerHTML = `
+                <div><img src="${p.img}" style="max-width:100%; border-radius:15px;"></div>
+                <div>
+                    <h2>${p.name}</h2>
+                    <div class="price">${format(p.price)}</div>
+                    <p style="font-family:sans-serif; font-size:0.9rem; color:#666; line-height:1.4;">${p.desc}</p>
+                    <div class="qty-control">
+                        <button class="qty-btn" onclick="updateModalQty(-1)">-</button>
+                        <div class="qty-val" id="m-qty">1</div>
+                        <button class="qty-btn" onclick="updateModalQty(1)">+</button>
+                    </div>
+                    <button class="add-to-cart-btn" onclick="addToCart(${p.id}, event)">AÑADIR AL CARRITO</button>
+                    <button class="buy-now-wa" onclick="buyNowWA(${p.id})">Comprar solo este (WhatsApp)</button>
+                    ${hint}
+                </div>
+            `;
+            document.getElementById('product-modal').classList.add('modal-active');
+        }
 
-<script>
-    function changeModalQty(btn, delta) {
-        const span = btn.parentElement.querySelector(".modal-qty");
-        let qty = parseInt(span.innerText) + delta;
-        if(qty < 1) qty = 1;
-        span.innerText = qty;
-    }
+        function updateModalQty(v) {
+            currentModalQty = Math.max(1, currentModalQty + v);
+            document.getElementById('m-qty').innerText = currentModalQty;
+        }
 
-    function addAdvancedToCart(n, p, btn) {
-        const qty = parseInt(btn.parentElement.querySelector(".modal-qty").innerText);
-        const item = cart.find(i => i.n === n);
-        if(item) item.q += qty; else cart.push({n, p, q: qty});
-        localStorage.setItem("cart_dr", JSON.stringify(cart));
-        update();
-        
-        // Feedback visual
-        const originalText = btn.innerText;
-        btn.innerText = "¡AÑADIDO! ✅";
-        btn.style.background = "#25D366";
-        setTimeout(() => {
-            btn.innerText = originalText;
-            btn.style.background = "#081A3A";
-            // Cerrar modal automáticamente (opcional, pero mejora UX)
-            const checkboxId = btn.closest(".product-modal").previousElementSibling.id;
-            document.getElementById(checkboxId).checked = false;
-        }, 800);
-    }
-</script>
+        function closeModal() { document.getElementById('product-modal').classList.remove('modal-active'); }
+
+        function addToCart(id, e) {
+            const p = products.find(x => x.id === id);
+            const inCart = cart.find(x => x.id === id);
+            if(inCart) inCart.qty += currentModalQty;
+            else cart.push({...p, qty: currentModalQty});
+            
+            // Animación +1
+            const plus = document.createElement('div');
+            plus.className = 'plus-one';
+            plus.innerText = '+' + currentModalQty;
+            plus.style.left = e.clientX + 'px';
+            plus.style.top = e.clientY + 'px';
+            document.body.appendChild(plus);
+            setTimeout(() => plus.remove(), 600);
+
+            saveCart();
+            closeModal();
+        }
+
+        function saveCart() {
+            localStorage.setItem('dual_cart', JSON.stringify(cart));
+            updateUI();
+        }
+
+        function updateUI() {
+            const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+            const count = cart.reduce((s, i) => s + i.qty, 0);
+
+            // Header PC
+            const hBtn = document.getElementById('cart-header-btn');
+            if(count > 0) {
+                hBtn.classList.add('visible');
+                document.getElementById('cart-total-header').innerText = format(total);
+            } else {
+                hBtn.classList.remove('visible');
+            }
+
+            // Float Móvil
+            const fBtn = document.getElementById('cart-float-btn');
+            if(count > 0) {
+                fBtn.classList.add('visible');
+                document.getElementById('cart-count-float').innerText = count;
+            } else {
+                fBtn.classList.remove('visible');
+            }
+
+            // Lista del Carrito
+            const list = document.getElementById('cart-items-list');
+            list.innerHTML = '';
+            cart.forEach(i => {
+                list.innerHTML += `
+                    <div class="c-item">
+                        <div class="c-item-info">
+                            <div class="c-item-name">${i.name}</div>
+                            <div class="c-item-price">${format(i.price * i.qty)}</div>
+                        </div>
+                        <div class="c-qty-control">
+                            <button class="btn-mini" onclick="changeQty(${i.id}, -1)">-</button>
+                            <div class="count">${i.qty}</div>
+                            <button class="btn-mini" onclick="changeQty(${i.id}, 1)">+</button>
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('cart-total-final').innerText = format(total);
+        }
+
+        function changeQty(id, v) {
+            const i = cart.find(x => x.id === id);
+            i.qty += v;
+            if(i.qty <= 0) cart = cart.filter(x => x.id !== id);
+            saveCart();
+        }
+
+        function toggleCart() {
+            const ov = document.getElementById('cart-overlay');
+            ov.style.display = (ov.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        function clearCart() {
+            if(confirm('¿Seguro que quieres vaciar tu carrito?')) {
+                cart = [];
+                saveCart();
+                toggleCart();
+            }
+        }
+
+        function checkoutWA() {
+            let msg = "Hola Dual Robotics, quiero hacer el siguiente pedido:\n\n";
+            cart.forEach(i => {
+                msg += `- ${i.qty}x ${i.name} (${format(i.price * i.qty)})\n`;
+            });
+            const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+            msg += `\n*TOTAL: ${format(total)}*`;
+            window.open(`https://wa.me/573206229042?text=${encodeURIComponent(msg)}`);
+        }
+
+        function buyNowWA(id) {
+            const p = products.find(x => x.id === id);
+            const msg = `Hola Dual Robotics, quiero el producto ${p.name.toUpperCase()} (Cantidad: ${currentModalQty}) por favor.`;
+            window.open(`https://wa.me/573206229042?text=${encodeURIComponent(msg)}`);
+        }
+
+        renderGrids();
+        updateUI();
+    </script>
 </body>
 </html>
