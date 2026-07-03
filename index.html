@@ -217,18 +217,17 @@
     <section class="hero">
         <h1>DUAL <span style="color:var(--accent-orange)">ROBOTICS</span></h1>
         <p>Tu aliado estratégico en tecnología. Encuentra los mejores componentes para llevar tus proyectos de robótica al siguiente nivel.</p>
-        <a href="#catalogo" class="hero-btn">Ver Catálogo</a>
+        <a href="#inicio" class="hero-btn">Ver Catálogo</a>
     </section>
 
-    <div id="catalogo" style="padding-top: 4rem;"></div>
+    <section id="full-catalog" style="display:none; padding: 2rem 1.5rem;"><h2 style="text-align:center; color:var(--dual-blue);">CATÁLOGO COMPLETO</h2><div id="main-grid" style="padding-top: 4rem;"></div>
 
 
     <div id="cat-view">
         <div class="section">
             <div class="section-header"><h2>Catálogo Completo</h2></div>
             <div class="product-grid" id="full-catalog"></div>
-        </div>
-    </div>
+        </div></section>
 
     <main>
         <div class="hero">
@@ -248,13 +247,11 @@
 
     <div id="cart-float-btn" onclick="toggleCart()">
         <span style="font-size:1.5rem">🛒</span>
-        <div class="cart-count" id="cart-count-float">0</div>
-    </div>
+        <div class="cart-count" id="cart-count-float">0</div></section>
 
     <div id="product-modal" class="product-modal">
         <div class="close-modal-btn" onclick="closeModal()">×</div>
-        <div id="modal-content" class="detail-container"></div>
-    </div>
+        <div id="modal-content" class="detail-container"></div></section>
 
     <div id="cart-overlay" onclick="if(event.target==this) toggleCart()">
         <div class="cart-window">
@@ -271,8 +268,7 @@
                 <button class="btn-finish" onclick="checkoutWA()">FINALIZAR POR WHATSAPP</button>
                 <button class="btn-empty" onclick="clearCart()">🗑️ Vaciar todo el carrito</button>
             </div>
-        </div>
-    </div>
+        </div></section>
 
     <footer>&copy; 2026 DUAL ROBOTICS — Tecnología para el Futuro</footer>
 
@@ -303,7 +299,7 @@
 
         function format(num) { return '$' + num.toLocaleString('de-DE'); }
 
-        function renderGrids() {
+        /* vieja render */
             const full = document.getElementById('full-catalog');
             const feat = document.getElementById('featured-grid');
             full.innerHTML = feat.innerHTML = '';
@@ -456,6 +452,31 @@
 
         renderGrids();
         updateUI();
+    
+        function showFullCatalog() {
+            document.getElementById("full-catalog").style.display = "block";
+            document.getElementById("inicio").style.display = "none";
+            window.scrollTo(0, 0);
+        }
+
+        function renderGrids() {
+            const mainGrid = document.getElementById("main-grid");
+            const featuredGrid = document.getElementById("featured-grid");
+            
+            mainGrid.innerHTML = "";
+            featuredGrid.innerHTML = "";
+
+            // Renderizar TODO en el catálogo completo
+            products.forEach(p => {
+                mainGrid.innerHTML += createProductCard(p);
+            });
+
+            // Renderizar solo los primeros 3 en el inicio
+            products.slice(0, 3).forEach(p => {
+                featuredGrid.innerHTML += createProductCard(p);
+            });
+        }
+
     </script>
 </body>
 </html>
