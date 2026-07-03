@@ -152,7 +152,45 @@
         }
 
         footer { text-align: center; padding: 4rem; color: #888; font-size: 0.9rem; background: #eee; margin-top: 4rem; }
-    </style>
+    
+    /* CARRITO PROFESIONAL */
+    #cart-btn {
+        position: fixed; bottom: 30px; right: 30px;
+        background: #FF6A00; color: white;
+        width: 65px; height: 65px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 8px 25px rgba(255, 106, 0, 0.5);
+        cursor: pointer; z-index: 10001; font-size: 1.8rem;
+        transition: transform 0.3s;
+    }
+    #cart-count {
+        position: absolute; top: -2px; right: -2px;
+        background: #081A3A; color: white;
+        width: 24px; height: 24px; border-radius: 50%;
+        font-size: 0.8rem; display: flex; align-items: center; justify-content: center; font-weight: bold;
+        border: 2px solid white;
+    }
+    #cart-overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.85); z-index: 10002;
+        display: none; align-items: center; justify-content: center;
+        backdrop-filter: blur(10px);
+    }
+    .cart-box {
+        background: white; width: 90%; max-width: 450px;
+        border-radius: 20px; padding: 25px; position: relative;
+        font-family: Arial, sans-serif;
+    }
+    .cart-item {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 12px 0; border-bottom: 1px solid #eee;
+    }
+    .add-to-cart-btn {
+        background: #081A3A; color: white; border: none; padding: 14px;
+        border-radius: 10px; width: 100%; font-weight: bold; cursor: pointer;
+        text-transform: uppercase; margin-top: 15px; font-size: 0.9rem;
+    }
+</style>
 </head>
 <body>
 
@@ -236,38 +274,27 @@
     </main>
 
     <!-- Modales -->
-    <div class="product-modal modal-p1"><label for="check-p1" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/63tgzrphr7vbxc3iyykfen" style="max-width:45%"><img src="https://share.zapia.com/blu8yg5mrdpbkiqkx4mcru" style="max-width:45%; margin-left:5%"></div><div><h2>MOTOR TT PLÁSTICO</h2><div class="price">$12.000</div><p class="p-desc">Diseñado para la agilidad. Este motor ofrece una excelente relación entre peso y velocidad, siendo la opción ideal para robots ligeros, velocistas y seguidores de línea que necesitan reacciones rápidas.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20MOTOR%20TT%20PL%C3%81STICO%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p2"><label for="check-p2" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/h9gdxo9zyxsrl04aiu3qzl" style="max-width:45%"><img src="https://share.zapia.com/puiy7uj9epnoruglpyvsyn" style="max-width:45%; margin-left:5%"></div><div><h2>MOTOR TT METÁLICO</h2><div class="price">$25.000</div><p class="p-desc">Potencia y resistencia extrema. Equipado con engranajes de acero para soportar cargas pesadas y ofrecer el máximo torque en terrenos difíciles o proyectos de alta exigencia.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20MOTOR%20TT%20MET%C3%81LICO%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p3"><label for="check-p3" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/9rvs3y82mt436hnoz1qrc2" style="max-width:45%"><img src="https://share.zapia.com/d7sbux0q0d6pxom2mwl6w0" style="max-width:45%; margin-left:5%"></div><div><h2>SENSOR ULTRASÓNICO</h2><div class="price">$16.000</div><p class="p-desc">El "ojo" de tu robot. Permite detectar obstáculos y medir distancias con precisión mediante ondas de ultrasonido.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20SENSOR%20ULTRAS%C3%93NICO%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p4"><label for="check-p4" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/kirfhfkzs2vl0bbkp95l9k" style="max-width:100%"></div><div><h2>MÓDULO L298N</h2><div class="price">$20.900</div><p class="p-desc">Driver de potencia esencial para controlar la velocidad y el sentido de giro de hasta dos motores de corriente continua simultáneamente.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20M%C3%93DULO%20L298N%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p5"><label for="check-p5" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/rnj769r4frbkk91xq940jq" style="max-width:45%"><img src="https://share.zapia.com/k7dys60ui2tb64a72w14hz" style="max-width:45%; margin-left:5%"></div><div><h2>BLUETOOTH HC-06</h2><div class="price">$27.700</div><p class="p-desc">Conecta tus proyectos a tu celular. Permite el control inalámbrico de tus robots mediante una conexión estable y fácil de configurar.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20BLUETOOTH%20HC-06%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p6"><label for="check-p6" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/zjv4uccl9tz011oyu8bgpq" style="max-width:45%"><img src="https://share.zapia.com/qpl00ktpwizgn9r588jv1e" style="max-width:45%; margin-left:5%"></div><div><h2>ARDUINO UNO R3</h2><div class="price">$57.600</div><p class="p-desc">La placa más versátil para aprender electrónica y programar tus propios robots. Ideal tanto para principiantes como para expertos en proyectos de automatización.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20ARDUINO%20UNO%20R3%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p7"><label for="check-p7" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/44puhtxcrluxr0973mpl6m" style="max-width:45%"><img src="https://share.zapia.com/8imhw1bjnnjf0v3ptfoaz6" style="max-width:45%; margin-left:5%"></div><div><h2>ARDUINO NANO</h2><div class="price">$48.900</div><p class="p-desc">Todo el poder del Arduino Uno en un tamaño ultra compacto. Perfecto para proyectos pequeños, wearables y prototipos que requieren poco espacio.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20ARDUINO%20NANO%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p8"><label for="check-p8" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/on8mttj4jofgyx17y16bf3" style="max-width:45%"><img src="https://share.zapia.com/k9bwfm2zicns4a1vly5s5o" style="max-width:45%; margin-left:5%"></div><div><h2>SERVOMOTOR SG90</h2><div class="price">$16.300</div><p class="p-desc">Pequeño, ligero y preciso. Ideal para mover brazos robóticos, timones o cualquier mecanismo que requiera un control de ángulo exacto.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20SERVOMOTOR%20SG90%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p9"><label for="check-p9" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/krty2s0s25794w98mzikv5" style="max-width:100%"></div><div><h2>BATERÍA 18650</h2><div class="price">$24.500</div><p class="p-desc">Celda de litio recargable de alta capacidad (1700mAh). Proporciona la energía necesaria para que tus proyectos funcionen durante horas sin interrupciones.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20BATER%C3%8DA%2018650%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p10"><label for="check-p10" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/4t0gn0r226j2kvufo7neps" style="max-width:100%"></div><div><h2>PORTABATERÍAS (3 CELDAS)</h2><div class="price">$11.000</div><p class="p-desc">Soporte robusto diseñado para conectar tres baterías 18650 en serie, proporcionando el voltaje ideal para motores y placas.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20PORTABATER%C3%8DAS%20(3%20CELDAS)%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p11"><label for="check-p11" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/gebtkd15mtujhxcjot6d9i" style="max-width:100%"></div><div><h2>PROTOBOARD 400</h2><div class="price">$10.100</div><p class="p-desc">El tablero ideal para prototipar. Permite armar y probar tus circuitos rápidamente sin necesidad de soldar cables.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20PROTOBOARD%20400%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p13"><label for="check-p13" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/8cf4ibcmkk47e9z29pallr" style="max-width:45%"><img src="https://share.zapia.com/wkbdj7l8n7biaq0gya5w50" style="max-width:45%; margin-left:5%"></div><div><h2>MÓDULO TP4056</h2><div class="price">$8.500</div><p class="p-desc">Cargador inteligente para baterías de litio. Incluye protección contra sobrecargas para mantener tus baterías seguras y duraderas.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20M%C3%93DULO%20TP4056%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p14"><label for="check-p14" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/y7n83iryllg4xw3c0ong1r" style="max-width:45%"><img src="https://share.zapia.com/1tby2eml4158huxxi2qesd" style="max-width:45%; margin-left:5%"></div><div><h2>SENSOR TCRT5000</h2><div class="price">$21.800</div><p class="p-desc">Sensor infrarrojo de alta precisión, perfecto para robots seguidores de línea o detección de objetos a corta distancia.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20SENSOR%20TCRT5000%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p15"><label for="check-p15" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/v0vj4dlt5h2o5m4kn3wznn" style="max-width:100%"></div><div><h2>RUEDA MOTOR TT</h2><div class="price">$8.500</div><p class="p-desc">Rueda de goma con excelente tracción, diseñada para ajustarse perfectamente al eje de cualquier motor tipo TT.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20RUEDA%20MOTOR%20TT%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p16"><label for="check-p16" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/5w1lzmj0lsqoyckb2jw7ay" style="max-width:100%"></div><div><h2>CABLE AWG22</h2><div class="price">$2.000</div><p class="p-desc">Cable flexible de alta calidad, ideal para realizar conexiones internas seguras y organizadas en todos tus prototipos.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20CABLE%20AWG22%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p17"><label for="check-p17" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/tvvdod7usflcks649snsu7" style="max-width:100%"></div><div><h2>DUPONT MACHO-MACHO (X20)</h2><div class="price">$8.500</div><p class="p-desc">Paquete de 20 cables de conexión rápida, ideales para prototipos en protoboard y conexiones seguras entre módulos electrónicos.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20DUPONT%20MACHO-MACHO%20(X20)%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p18"><label for="check-p18" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/021jkjehm7go8rivpag6zx" style="max-width:100%"></div><div><h2>DUPONT HEMBRA-HEMBRA (X20)</h2><div class="price">$8.500</div><p class="p-desc">Set de 20 cables versátiles para interconectar sensores y módulos de forma directa y ordenada sin necesidad de soldadura.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20DUPONT%20HEMBRA-HEMBRA%20(X20)%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
-    <div class="product-modal modal-p19"><label for="check-p19" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/k6videadpvt4d4yzppba6l" style="max-width:100%"></div><div><h2>DUPONT MACHO-HEMBRA (X20)</h2><div class="price">$8.500</div><p class="p-desc">Pack de 20 cables esenciales para extender conexiones desde tu placa de control hacia sensores externos con total fiabilidad.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20DUPONT%20MACHO-HEMBRA%20(X20)%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
+    <div class="product-modal modal-p1"><label for="check-p1" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/63tgzrphr7vbxc3iyykfen" style="max-width:45%"><img src="https://share.zapia.com/blu8yg5mrdpbkiqkx4mcru" style="max-width:45%; margin-left:5%"></div><div><h2>MOTOR TT PLÁSTICO</h2><div class="price">$12.000</div><button class="add-to-cart-btn" onclick="addToCart('MOTOR TT PLÁSTICO', 12000)">Añadir al Carrito</button><p class="p-desc">Diseñado para la agilidad. Este motor ofrece una excelente relación entre peso y velocidad, siendo la opción ideal para robots ligeros, velocistas y seguidores de línea que necesitan reacciones rápidas.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20MOTOR%20TT%20PL%C3%81STICO%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
+    <div class="product-modal modal-p2"><label for="check-p2" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/h9gdxo9zyxsrl04aiu3qzl" style="max-width:45%"><img src="https://share.zapia.com/puiy7uj9epnoruglpyvsyn" style="max-width:45%; margin-left:5%"></div><div><h2>MOTOR TT METÁLICO</h2><div class="price">$25.000</div><button class="add-to-cart-btn" onclick="addToCart('MOTOR TT METÁLICO', 25000)">Añadir al Carrito</button><p class="p-desc">Potencia y resistencia extrema. Equipado con engranajes de acero para soportar cargas pesadas y ofrecer el máximo torque en terrenos difíciles o proyectos de alta exigencia.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20MOTOR%20TT%20MET%C3%81LICO%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
+    <div class="product-modal modal-p3"><label for="check-p3" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/9rvs3y82mt436hnoz1qrc2" style="max-width:45%"><img src="https://share.zapia.com/d7sbux0q0d6pxom2mwl6w0" style="max-width:45%; margin-left:5%"></div><div><h2>SENSOR ULTRASÓNICO</h2><div class="price">$16.000</div><button class="add-to-cart-btn" onclick="addToCart('SENSOR ULTRASÓNICO', 16000)">Añadir al Carrito</button><p class="p-desc">El "ojo" de tu robot. Permite detectar obstáculos y medir distancias con precisión mediante ondas de ultrasonido.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20SENSOR%20ULTRAS%C3%93NICO%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
+    <div class="product-modal modal-p4"><label for="check-p4" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/kirfhfkzs2vl0bbkp95l9k" style="max-width:100%"></div><div><h2>MÓDULO L298N</h2><div class="price">$20.900</div><button class="add-to-cart-btn" onclick="addToCart('MÓDULO L298N', 20900)">Añadir al Carrito</button><p class="p-desc">Driver de potencia esencial para controlar la velocidad y el sentido de giro de hasta dos motores de corriente continua simultáneamente.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20M%C3%93DULO%20L298N%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
+    <div class="product-modal modal-p5"><label for="check-p5" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/rnj769r4frbkk91xq940jq" style="max-width:45%"><img src="https://share.zapia.com/k7dys60ui2tb64a72w14hz" style="max-width:45%; margin-left:5%"></div><div><h2>BLUETOOTH HC-06</h2><div class="price">$27.700</div><button class="add-to-cart-btn" onclick="addToCart('BLUETOOTH HC-06', 27700)">Añadir al Carrito</button><p class="p-desc">Conecta tus proyectos a tu celular. Permite el control inalámbrico de tus robots mediante una conexión estable y fácil de configurar.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20BLUETOOTH%20HC-06%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
+    <div class="product-modal modal-p6"><label for="check-p6" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/zjv4uccl9tz011oyu8bgpq" style="max-width:45%"><img src="https://share.zapia.com/qpl00ktpwizgn9r588jv1e" style="max-width:45%; margin-left:5%"></div><div><h2>ARDUINO UNO R3</h2><div class="price">$57.600</div><button class="add-to-cart-btn" onclick="addToCart('ARDUINO UNO R3', 57600)">Añadir al Carrito</button><p class="p-desc">La placa más versátil para aprender electrónica y programar tus propios robots. Ideal tanto para principiantes como para expertos en proyectos de automatización.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20ARDUINO%20UNO%20R3%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
+    <div class="product-modal modal-p7"><label for="check-p7" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/44puhtxcrluxr0973mpl6m" style="max-width:45%"><img src="https://share.zapia.com/8imhw1bjnnjf0v3ptfoaz6" style="max-width:45%; margin-left:5%"></div><div><h2>ARDUINO NANO</h2><div class="price">$48.900</div><button class="add-to-cart-btn" onclick="addToCart('ARDUINO NANO', 48900)">Añadir al Carrito</button><p class="p-desc">Todo el poder del Arduino Uno en un tamaño ultra compacto. Perfecto para proyectos pequeños, wearables y prototipos que requieren poco espacio.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20ARDUINO%20NANO%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
+    <div class="product-modal modal-p8"><label for="check-p8" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/on8mttj4jofgyx17y16bf3" style="max-width:45%"><img src="https://share.zapia.com/k9bwfm2zicns4a1vly5s5o" style="max-width:45%; margin-left:5%"></div><div><h2>SERVOMOTOR SG90</h2><div class="price">$16.300</div><button class="add-to-cart-btn" onclick="addToCart('SERVOMOTOR SG90', 16300)">Añadir al Carrito</button><p class="p-desc">Pequeño, ligero y preciso. Ideal para mover brazos robóticos, timones o cualquier mecanismo que requiera un control de ángulo exacto.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20SERVOMOTOR%20SG90%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
+    <div class="product-modal modal-p9"><label for="check-p9" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/krty2s0s25794w98mzikv5" style="max-width:100%"></div><div><h2>BATERÍA 18650</h2><div class="price">$24.500</div><button class="add-to-cart-btn" onclick="addToCart('BATERÍA 18650', 24500)">Añadir al Carrito</button><p class="p-desc">Celda de litio recargable de alta capacidad (1700mAh). Proporciona la energía necesaria para que tus proyectos funcionen durante horas sin interrupciones.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20BATER%C3%8DA%2018650%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
+    <div class="product-modal modal-p10"><label for="check-p10" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/4t0gn0r226j2kvufo7neps" style="max-width:100%"></div><div><h2>PORTABATERÍAS (3 CELDAS)</h2><div class="price">$11.000</div><button class="add-to-cart-btn" onclick="addToCart('PORTABATERÍAS (3 CELDAS)', 11000)">Añadir al Carrito</button><p class="p-desc">Soporte robusto diseñado para conectar tres baterías 18650 en serie, proporcionando el voltaje ideal para motores y placas.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20PORTABATER%C3%8DAS%20(3%20CELDAS)%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
+    <div class="product-modal modal-p11"><label for="check-p11" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/gebtkd15mtujhxcjot6d9i" style="max-width:100%"></div><div><h2>PROTOBOARD 400</h2><div class="price">$10.100</div><button class="add-to-cart-btn" onclick="addToCart('PROTOBOARD 400', 10100)">Añadir al Carrito</button><p class="p-desc">El tablero ideal para prototipar. Permite armar y probar tus circuitos rápidamente sin necesidad de soldar cables.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20PROTOBOARD%20400%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
+    <div class="product-modal modal-p13"><label for="check-p13" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/8cf4ibcmkk47e9z29pallr" style="max-width:45%"><img src="https://share.zapia.com/wkbdj7l8n7biaq0gya5w50" style="max-width:45%; margin-left:5%"></div><div><h2>MÓDULO TP4056</h2><div class="price">$8.500</div><button class="add-to-cart-btn" onclick="addToCart('MÓDULO TP4056', 8500)">Añadir al Carrito</button><p class="p-desc">Cargador inteligente para baterías de litio. Incluye protección contra sobrecargas para mantener tus baterías seguras y duraderas.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20M%C3%93DULO%20TP4056%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
+    <div class="product-modal modal-p14"><label for="check-p14" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/y7n83iryllg4xw3c0ong1r" style="max-width:45%"><img src="https://share.zapia.com/1tby2eml4158huxxi2qesd" style="max-width:45%; margin-left:5%"></div><div><h2>SENSOR TCRT5000</h2><div class="price">$21.800</div><button class="add-to-cart-btn" onclick="addToCart('SENSOR TCRT5000', 21800)">Añadir al Carrito</button><p class="p-desc">Sensor infrarrojo de alta precisión, perfecto para robots seguidores de línea o detección de objetos a corta distancia.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20SENSOR%20TCRT5000%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
+    <div class="product-modal modal-p15"><label for="check-p15" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/v0vj4dlt5h2o5m4kn3wznn" style="max-width:100%"></div><div><h2>RUEDA MOTOR TT</h2><div class="price">$8.500</div><button class="add-to-cart-btn" onclick="addToCart('RUEDA MOTOR TT', 8500)">Añadir al Carrito</button><p class="p-desc">Rueda de goma con excelente tracción, diseñada para ajustarse perfectamente al eje de cualquier motor tipo TT.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20RUEDA%20MOTOR%20TT%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
+    <div class="product-modal modal-p16"><label for="check-p16" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/5w1lzmj0lsqoyckb2jw7ay" style="max-width:100%"></div><div><h2>CABLE AWG22</h2><div class="price">$2.000</div><button class="add-to-cart-btn" onclick="addToCart('CABLE AWG22', 2000)">Añadir al Carrito</button><p class="p-desc">Cable flexible de alta calidad, ideal para realizar conexiones internas seguras y organizadas en todos tus prototipos.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20CABLE%20AWG22%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
+    <div class="product-modal modal-p17"><label for="check-p17" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/tvvdod7usflcks649snsu7" style="max-width:100%"></div><div><h2>DUPONT MACHO-MACHO (X20)</h2><div class="price">$8.500</div><button class="add-to-cart-btn" onclick="addToCart('DUPONT MACHO-MACHO (X20)', 8500)">Añadir al Carrito</button><p class="p-desc">Paquete de 20 cables de conexión rápida, ideales para prototipos en protoboard y conexiones seguras entre módulos electrónicos.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20DUPONT%20MACHO-MACHO%20(X20)%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
+    <div class="product-modal modal-p18"><label for="check-p18" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/021jkjehm7go8rivpag6zx" style="max-width:100%"></div><div><h2>DUPONT HEMBRA-HEMBRA (X20)</h2><div class="price">$8.500</div><button class="add-to-cart-btn" onclick="addToCart('DUPONT HEMBRA-HEMBRA (X20)', 8500)">Añadir al Carrito</button><p class="p-desc">Set de 20 cables versátiles para interconectar sensores y módulos de forma directa y ordenada sin necesidad de soldadura.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20DUPONT%20HEMBRA-HEMBRA%20(X20)%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
+    <div class="product-modal modal-p19"><label for="check-p19" class="close-modal-btn">×</label><div class="detail-container"><div><img src="https://share.zapia.com/k6videadpvt4d4yzppba6l" style="max-width:100%"></div><div><h2>DUPONT MACHO-HEMBRA (X20)</h2><div class="price">$8.500</div><button class="add-to-cart-btn" onclick="addToCart('DUPONT MACHO-HEMBRA (X20)', 8500)">Añadir al Carrito</button><p class="p-desc">Pack de 20 cables esenciales para extender conexiones desde tu placa de control hacia sensores externos con total fiabilidad.</p><a href="https://wa.me/573206229042?text=Hola%20Dual%20Robotics%20quiero%20el%20producto%20DUPONT%20MACHO-HEMBRA%20(X20)%20por%20favor" class="whatsapp-btn">Comprar</a></div></div></div>
 
     <footer>&copy; 2026 DUAL ROBOTICS — Tecnología para el Futuro</footer>
-<!-- zapia-plg-bubble:v1 -->
-<a class="zapia-cta"
-   dir="ltr"
-   href="https://zapia.chottu.link/chat?utm_source=published_site&amp;utm_medium=plg_bubble&amp;utm_campaign=create_yours&amp;ref=go57mziu"
-   target="_blank"
-   rel="noopener">
-  <span class="zapia-cta__icon" aria-hidden="true"><svg viewBox="0 0 104 104" width="1.25em" height="1.25em" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M97.7314 44.2849C97.7314 44.2147 97.7314 44.1446 97.7314 44.051C97.5213 38.5089 96.2604 32.9433 93.8556 27.6584C93.8088 27.5648 93.7622 27.4713 93.7388 27.3778C93.4352 26.723 93.1317 26.0916 92.7814 25.4602C92.758 25.4368 92.758 25.4134 92.7348 25.3667C92.5947 25.0861 92.4312 24.8054 92.291 24.5482C92.2678 24.5014 92.2444 24.4313 92.1977 24.3845H5.01166C5.01166 24.7119 5.01166 25.0627 5.03501 25.3901C5.03501 25.4602 5.03501 25.5537 5.03501 25.6239C5.03501 25.9513 5.05836 26.2787 5.08171 26.6061C5.08171 26.6294 5.08171 26.6528 5.08171 26.6762C5.10506 26.9802 5.12841 27.3076 5.15174 27.6116C5.15174 27.6818 5.15176 27.7753 5.17509 27.8455C5.19844 28.1728 5.22179 28.5002 5.26849 28.8276C5.26849 28.8744 5.26849 28.8977 5.29184 28.9445C5.31519 29.2485 5.3619 29.5291 5.38525 29.8098C5.38525 29.8799 5.4086 29.9501 5.4086 30.0436C5.4553 30.371 5.502 30.675 5.54868 31.0024C5.54868 31.0491 5.57203 31.0959 5.57203 31.1427C5.61873 31.4233 5.66543 31.7039 5.71213 31.9845C5.73548 32.0546 5.73548 32.1248 5.75883 32.1949C5.80553 32.4991 5.87559 32.8264 5.94562 33.1304C5.96897 33.1772 5.96897 33.2473 5.99232 33.2941C6.03902 33.5747 6.10907 33.8319 6.17912 34.1125C6.20247 34.1826 6.20247 34.2528 6.22582 34.3229C6.29586 34.6269 6.36591 34.9309 6.45931 35.2351C6.48266 35.3052 6.48266 35.352 6.50601 35.4221C6.57606 35.6793 6.6461 35.9599 6.71615 36.2172C6.7395 36.2873 6.7395 36.3341 6.76285 36.4042C6.85625 36.7082 6.9263 37.0122 7.01968 37.2928C7.04303 37.3629 7.06638 37.4331 7.08973 37.4798C7.18314 37.7372 7.25319 37.9944 7.34659 38.2517C7.36994 38.2984 7.39327 38.3686 7.39327 38.4153C7.48667 38.7193 7.60342 38.9999 7.69682 39.3039C7.72017 39.3741 7.74351 39.4442 7.76686 39.5143C7.86026 39.7716 7.95366 40.0288 8.07041 40.286C8.09376 40.3328 8.09376 40.3795 8.1171 40.4263C8.23385 40.7071 8.3506 41.011 8.46735 41.2916C8.49068 41.3618 8.53739 41.4319 8.56074 41.5021C8.67749 41.7593 8.79424 42.0165 8.88762 42.2737C8.91097 42.2971 8.91097 42.3439 8.93432 42.3673C9.05107 42.6479 9.19118 42.9285 9.33126 43.2092C9.35461 43.2794 9.40131 43.3495 9.42466 43.4197C9.54141 43.6769 9.6815 43.9341 9.8216 44.2147C9.8216 44.2381 9.84495 44.2615 9.84495 44.2849C9.98504 44.5655 10.1251 44.8227 10.2886 45.1033C10.3353 45.1734 10.3586 45.2436 10.4053 45.3137C10.5454 45.5943 10.7089 45.8515 10.849 46.1323C10.849 46.1323 10.849 46.1557 10.8723 46.1557C11.0124 46.4129 11.1759 46.6701 11.3393 46.9273C11.386 46.9975 11.4094 47.0676 11.456 47.1378C11.6195 47.395 11.7829 47.6522 11.9464 47.9094C11.9697 47.9328 11.9697 47.9562 11.9931 47.9796C12.1565 48.2134 12.2966 48.4472 12.4601 48.6812C12.5068 48.7514 12.5535 48.8215 12.6002 48.8683C12.7636 49.1255 12.9504 49.3593 13.1138 49.6166C13.1372 49.6633 13.1605 49.6867 13.1839 49.7335C13.3473 49.9439 13.5108 50.1778 13.6509 50.3882C13.6976 50.4584 13.7443 50.5051 13.791 50.5753C13.9778 50.8091 14.1646 51.0663 14.3513 51.3003C14.3747 51.3471 14.4215 51.3938 14.4447 51.4172C14.6082 51.6277 14.7716 51.8381 14.9351 52.0252C14.9818 52.072 15.0285 52.1421 15.0752 52.1889C15.262 52.4227 15.4721 52.6565 15.659 52.8904C15.7056 52.9371 15.7523 52.9839 15.7757 53.0307C15.9391 53.2177 16.1258 53.4282 16.2893 53.6153C16.3361 53.662 16.3827 53.7322 16.4295 53.7789C16.6396 53.9894 16.8263 54.2234 17.0364 54.4338C17.0832 54.4806 17.13 54.5274 17.1766 54.5741C17.3635 54.7612 17.5268 54.9483 17.7136 55.1353C17.7603 55.1821 17.8071 55.2289 17.8537 55.2756C18.0638 55.4861 18.2741 55.6965 18.5074 55.907C18.5542 55.9537 18.6242 56.0005 18.671 56.0707C18.8577 56.2577 19.0446 56.4214 19.2313 56.6085C19.2781 56.6552 19.3247 56.702 19.3715 56.7255C19.605 56.936 19.8151 57.1231 20.0486 57.3335C20.0952 57.3803 20.1653 57.427 20.2353 57.4738C20.4455 57.6375 20.6324 57.8246 20.8425 57.9882C20.8891 58.0116 20.9125 58.0584 20.9592 58.0818C21.1927 58.2688 21.4262 58.4559 21.6597 58.643C21.7297 58.6897 21.7765 58.7365 21.8465 58.7833C21.9866 58.9002 22.1266 58.9937 22.2667 59.0873L66.0933 39.0935L26.0494 61.683L16.3361 67.1783C17.0598 68.488 17.8537 69.7507 18.7177 70.9668C19.7683 72.4867 20.9125 73.8898 22.1266 75.246C22.3601 75.5033 22.617 75.784 22.8505 76.0412C24.088 77.3507 25.3956 78.5434 26.7731 79.6658C27.5903 80.3439 28.431 80.9753 29.2948 81.5834C30.7425 82.5889 32.2368 83.5242 33.778 84.3428C34.2448 84.6 34.7118 84.8338 35.1789 85.0677C36.2762 85.6055 37.3737 86.0965 38.5179 86.5408C38.8447 86.6579 39.1716 86.7982 39.4985 86.9151C39.8953 87.0554 40.3157 87.1957 40.736 87.336C41.2496 87.4997 41.74 87.6634 42.2538 87.8037C43.6546 88.2012 45.1022 88.5519 46.55 88.8091C46.9003 88.8793 47.2271 88.9261 47.5774 88.9728C49.632 89.3003 51.7335 89.464 53.8349 89.4874C61.1899 89.5576 68.6383 87.7569 75.503 83.8749C78.3983 82.2381 81.0134 80.3439 83.3717 78.1925C83.9554 77.6547 84.5158 77.1169 85.0762 76.5791C86.0802 75.55 87.0376 74.4978 87.9248 73.3988C88.2984 72.9543 88.6487 72.4867 88.9756 72.0424C89.4892 71.3643 89.9562 70.6861 90.4232 69.9845C90.4699 69.9377 90.4932 69.8676 90.5399 69.8208C90.8902 69.283 91.2404 68.7452 91.5673 68.2074C91.9176 67.6228 92.2678 67.0147 92.5947 66.4067C92.5947 66.4067 92.5947 66.3833 92.6181 66.3833C92.8516 65.939 93.0851 65.4947 93.2952 65.0505C93.4586 64.7229 93.6221 64.3722 93.7854 64.0214C94.0891 63.3667 94.3692 62.712 94.6261 62.0337C94.7194 61.7999 94.8128 61.5894 94.8829 61.3556C95.2098 60.5372 95.4899 59.6954 95.7468 58.8534C95.7702 58.7833 95.7936 58.7131 95.8168 58.643C96.7274 55.6498 97.3346 52.563 97.6147 49.4295V49.4061C97.7314 47.6522 97.7782 45.9686 97.7314 44.2849Z" fill="#fff"/></svg></span>
-  <span class="zapia-cta__copy">
-    <span class="zapia-cta__label"><bdi>Hecho con Zapia</bdi></span>
-    <span class="zapia-cta__tagline">Crea el tuyo, gratis</span>
-  </span>
-</a>
+
 <style>
   .zapia-cta {
     position: fixed;
@@ -314,15 +341,102 @@
     .zapia-cta { transition: none; }
     .zapia-cta:hover, .zapia-cta:focus-visible { transform: none; }
   }
+
+    /* CARRITO PROFESIONAL */
+    #cart-btn {
+        position: fixed; bottom: 30px; right: 30px;
+        background: #FF6A00; color: white;
+        width: 65px; height: 65px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 8px 25px rgba(255, 106, 0, 0.5);
+        cursor: pointer; z-index: 10001; font-size: 1.8rem;
+        transition: transform 0.3s;
+    }
+    #cart-count {
+        position: absolute; top: -2px; right: -2px;
+        background: #081A3A; color: white;
+        width: 24px; height: 24px; border-radius: 50%;
+        font-size: 0.8rem; display: flex; align-items: center; justify-content: center; font-weight: bold;
+        border: 2px solid white;
+    }
+    #cart-overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.85); z-index: 10002;
+        display: none; align-items: center; justify-content: center;
+        backdrop-filter: blur(10px);
+    }
+    .cart-box {
+        background: white; width: 90%; max-width: 450px;
+        border-radius: 20px; padding: 25px; position: relative;
+        font-family: Arial, sans-serif;
+    }
+    .cart-item {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 12px 0; border-bottom: 1px solid #eee;
+    }
+    .add-to-cart-btn {
+        background: #081A3A; color: white; border: none; padding: 14px;
+        border-radius: 10px; width: 100%; font-weight: bold; cursor: pointer;
+        text-transform: uppercase; margin-top: 15px; font-size: 0.9rem;
+    }
 </style>
 <!-- zapia-site-footer:v1 -->
 <footer style="text-align:center; padding:24px 16px; font-size:0.85rem; color:#6b6b6b; line-height:1.5;">
   <div>
-    <a href="https://zapia.com" style="color:inherit; text-decoration:none;">Made with <svg viewBox="0 0 57 56" width="1em" height="1em" style="vertical-align:middle;" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path opacity="0.9" d="M25.8676 36.4956C37.9264 36.4956 47.702 26.707 47.702 14.6321H4.0332C4.0332 26.707 13.8088 36.4956 25.8676 36.4956Z" fill="url(#zapia-grad-0)"/><path opacity="0.9" d="M39.3753 44.4023C49.8885 38.4879 53.6229 25.1593 47.7164 14.632L9.64478 36.0502C15.5513 46.5774 28.8622 50.3168 39.3753 44.4023Z" fill="url(#zapia-grad-1)"/><defs><linearGradient id="zapia-grad-0" x1="43.6468" y1="13.397" x2="44.7225" y2="41.4747" gradientUnits="userSpaceOnUse"><stop stop-color="#11998E"/><stop offset="0.536458" stop-color="#23C1AE" stop-opacity="0.6"/><stop offset="1" stop-color="#38EF7D" stop-opacity="0.29"/></linearGradient><linearGradient id="zapia-grad-1" x1="46.7232" y1="12.7918" x2="49.269" y2="54.5334" gradientUnits="userSpaceOnUse"><stop stop-color="#11998E"/><stop offset="0.536458" stop-color="#23C1AE" stop-opacity="0.6"/><stop offset="1" stop-color="#38EF7D" stop-opacity="0.29"/></linearGradient></defs></svg> Zapia</a>
+    <a href="https://zapia.com" style="color:inherit; text-decoration:none;">Made with <svg viewBox="0 0 57 56" width="1em" height="1em" style="vertical-align:middle;" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path opacity="0.9" d="M25.8676 36.4956C37.9264 36.4956 47.702 26.707 47.702 14.6321H4.0332C4.0332 26.707 13.8088 36.4956 25.8676 36.4956Z" fill="url(#zapia-grad-0)"/><path opacity="0.9" d="M39.3753 44.4023C49.8885 38.4879 53.6229 25.1593 47.7164 14.632L9.64478 36.0502C15.5513 46.5774 28.8622 50.3168 39.3753 44.4023Z" fill="url(#zapia-grad-1)"/><defs><linearGradient id="zapia-grad-0" x1="43.6468" y1="13.397" x2="44.7225" y2="41.4747" gradientUnits="userSpaceOnUse"><stop stop-color="#11998E"/><stop offset="0.536458" stop-color="#23C1AE" stop-opacity="0.6"/><stop offset="1" stop-color="#38EF7D" stop-opacity="0.29"/></linearGradient><linearGradient id="zapia-grad-1" x1="46.7232" y1="12.7918" x2="49.269" y2="54.5334" gradientUnits="userSpaceOnUse"><stop stop-color="#11998E"/><stop offset="0.536458" stop-color="#23C1AE" stop-opacity="0.6"/><stop offset="1" stop-color="#38EF7D" stop-opacity="0.29"/></linearGradient></defs></svg> Dual Robotics</a>
   </div>
   <div style="max-width:540px; margin:8px auto 0; font-size:0.75rem; opacity:0.85;">
-    Esta página fue publicada por un usuario de Zapia. Su contenido no fue escrito, revisado ni respaldado por Zapia.
+    Esta página fue publicada por un usuario de Dual Robotics. Su contenido no fue escrito, revisado ni respaldado por Dual Robotics.
   </div>
 </footer>
+
+<div id="cart-btn" onclick="toggleCart()" style="display:none">🛒<div id="cart-count">0</div></div>
+<div id="cart-overlay" onclick="if(event.target===this)toggleCart()">
+    <div class="cart-box">
+        <h2 style="color:#081A3A; text-align:center; margin-top:0;">Tu Pedido</h2>
+        <div id="cart-list" style="max-height:300px; overflow-y:auto; margin-bottom:20px;"></div>
+        <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:1.2rem; border-top:2px solid #eee; padding-top:15px;">
+            <span>TOTAL:</span><span id="cart-total">$0</span>
+        </div>
+        <button onclick="sendWhatsApp()" style="background:#25D366; color:white; width:100%; padding:18px; border:none; border-radius:12px; font-weight:bold; cursor:pointer; margin-top:20px; font-size:1rem;">FINALIZAR PEDIDO POR WHATSAPP</button>
+        <button onclick="toggleCart()" style="width:100%; margin-top:15px; border:none; background:none; color:#666; cursor:pointer; font-weight:bold;">Seguir comprando</button>
+    </div>
+</div>
+
+<script>
+    let cart = JSON.parse(localStorage.getItem("cart_dr") || "[]");
+    function update() {
+        const count = cart.reduce((s, i) => s + i.q, 0);
+        document.getElementById("cart-btn").style.display = count > 0 ? "flex" : "none";
+        document.getElementById("cart-count").innerText = count;
+        const list = document.getElementById("cart-list");
+        let total = 0;
+        list.innerHTML = "";
+        cart.forEach(i => {
+            total += i.p * i.q;
+            list.innerHTML += `<div class="cart-item"><span>${i.q}x ${i.n}</span><span>$${(i.p*i.q).toLocaleString()}</span></div>`;
+        });
+        document.getElementById("cart-total").innerText = "$" + total.toLocaleString();
+    }
+    function addToCart(n, p) {
+        const item = cart.find(i => i.n === n);
+        if(item) item.q++; else cart.push({n, p, q: 1});
+        localStorage.setItem("cart_dr", JSON.stringify(cart));
+        update();
+        alert(n + " añadido al carrito");
+    }
+    function toggleCart() {
+        const o = document.getElementById("cart-overlay");
+        o.style.display = o.style.display === "flex" ? "none" : "flex";
+    }
+    function sendWhatsApp() {
+        let text = "Hola Dual Robotics, quiero pedir:\n\n";
+        cart.forEach(i => text += `- ${i.q}x ${i.n} ($${(i.p*i.q).toLocaleString()})\n`);
+        const total = cart.reduce((s, i) => s + (i.p*i.q), 0);
+        text += `\n*TOTAL: $${total.toLocaleString()}*`;
+        window.open("https://wa.me/573206229042?text=" + encodeURIComponent(text));
+    }
+    window.onload = update;
+</script>
 </body>
 </html>
