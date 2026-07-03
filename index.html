@@ -214,25 +214,33 @@
             </nav>
         </div>
     </header>
-    
-    <section class="hero" style="height: 100vh;">
-        <h1>DUAL <span style="color:var(--accent-orange)">ROBOTICS</span></h1>
-        <p>Tu aliado estratégico en tecnología. Encuentra los mejores componentes para llevar tus proyectos de robótica al siguiente nivel.</p>
-        <a href="#inicio" class="hero-btn">Ver Catálogo</a>
+    <section class="hero" style="height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--dual-blue) 0%, #152d5a 100%); color: white; text-align: center; padding: 0 1.5rem;">
+        <h1 style="font-size: 2.5rem; margin-bottom: 1rem; font-style: italic;">DUAL <span style="color:var(--accent-orange)">ROBOTICS</span></h1>
+        <p style="font-size: 1.2rem; max-width: 600px; margin-bottom: 2rem; font-weight: normal;">Construye el futuro con nosotros.</p>
+        <button onclick="mostrarSeccionInicio()" class="hero-btn" style="background: var(--accent-orange); color: white; padding: 1rem 2.5rem; border-radius: 50px; border: none; font-weight: bold; text-transform: uppercase; cursor: pointer; box-shadow: 0 4px 15px rgba(255, 106, 0, 0.4);">Ver Catálogo</button>
     </section>
 
-    <section id="inicio" style="padding: 4rem 1.5rem; text-align: center; background: white;">
+    <!-- Sección de 3 productos (Oculta al inicio) -->
+    <section id="seccion-inicio" style="display: none; padding: 4rem 1.5rem; text-align: center; background: white;">
         <h2 style="color: var(--dual-blue); margin-bottom: 2rem;">PRODUCTOS DESTACADOS</h2>
         <div id="featured-grid" class="product-grid"></div>
         <div style="margin-top: 3rem;">
-            <button onclick="showFullCatalog()" class="hero-btn" style="background: var(--dual-blue);">VER MÁS PRODUCTOS</button>
+            <button onclick="mostrarCatalogoCompleto()" class="hero-btn" style="background: var(--dual-blue); color: white; padding: 1rem 2.5rem; border-radius: 50px; border: none; font-weight: bold; text-transform: uppercase; cursor: pointer;">VER MÁS PRODUCTOS</button>
         </div>
     </section>
 
-    <section id="full-catalog" style="display:none; padding: 4rem 1.5rem; background: white;">
+    <!-- Catálogo Completo (Oculto al inicio) -->
+    <section id="catalogo-completo" style="display: none; padding: 4rem 1.5rem; background: white;">
         <h2 style="text-align:center; color:var(--dual-blue); margin-bottom: 2rem;">NUESTRO CATÁLOGO</h2>
         <div id="main-grid" class="product-grid"></div>
     </section>
+
+    
+    
+
+    
+
+    
 
 
     
@@ -467,23 +475,38 @@
         renderGrids();
         updateUI();
     
-        function showFullCatalog() {
-            document.getElementById("full-catalog").style.display = "block";
-            document.getElementById("inicio").style.display = "none";
+        
+
+        
+        function mostrarSeccionInicio() {
+            document.querySelector(".hero").style.display = "none";
+            document.getElementById("seccion-inicio").style.display = "block";
+            window.scrollTo(0, 0);
+        }
+
+        function mostrarCatalogoCompleto() {
+            document.getElementById("seccion-inicio").style.display = "none";
+            document.getElementById("catalogo-completo").style.display = "block";
             window.scrollTo(0, 0);
         }
 
         function renderGrids() {
             const mainGrid = document.getElementById("main-grid");
             const featuredGrid = document.getElementById("featured-grid");
+            if(!mainGrid || !featuredGrid) return;
             
             mainGrid.innerHTML = "";
             featuredGrid.innerHTML = "";
 
-            // Renderizar TODO en el catálogo completo
             products.forEach(p => {
                 mainGrid.innerHTML += createProductCard(p);
             });
+
+            products.slice(0, 3).forEach(p => {
+                featuredGrid.innerHTML += createProductCard(p);
+            });
+        }
+);
 
             // Renderizar solo los primeros 3 en el inicio
             products.slice(0, 3).forEach(p => {
