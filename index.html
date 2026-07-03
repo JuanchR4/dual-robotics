@@ -172,6 +172,34 @@
         }
 
         footer { text-align: center; padding: 4rem; color: #888; font-size: 0.9rem; background: #eee; margin-top: 4rem; }
+    
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--dual-blue) 0%, #152d5a 100%);
+            color: white;
+            padding: 4rem 1.5rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+        }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; font-style: italic; }
+        .hero p { font-size: 1.1rem; opacity: 0.9; max-width: 600px; margin-bottom: 2rem; font-weight: normal; }
+        .hero-btn {
+            background: var(--accent-orange);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: transform 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 106, 0, 0.4);
+        }
+        .hero-btn:active { transform: scale(0.95); }
+
     </style>
 </head>
 <body>
@@ -186,6 +214,14 @@
             </nav>
         </div>
     </header>
+    <section class="hero">
+        <h1>DUAL <span style="color:var(--accent-orange)">ROBOTICS</span></h1>
+        <p>Tu aliado estratégico en tecnología. Encuentra los mejores componentes para llevar tus proyectos de robótica al siguiente nivel.</p>
+        <a href="#catalogo" class="hero-btn">Ver Catálogo</a>
+    </section>
+
+    <div id="catalogo" style="padding-top: 2rem;"></div>
+
 
     <div id="cat-view">
         <div class="section">
