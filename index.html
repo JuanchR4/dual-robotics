@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dual Robotics — Tienda Oficial</title>
+    <style>
+        :root {
+            --dual-blue: #081A3A;
+            --accent-orange: #FF6A00;
+            --wa-green: #25D366;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Arial Black', Gadget, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        header {
+            position: sticky; top: 0; width: 100%; z-index: 1000;
+            padding: 1rem 0;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 1.5rem; }
+        .logo { font-size: 1.3rem; font-weight: 900; text-decoration: none; font-style: italic; display: flex; gap: 4px; }
+        .logo .l-dual { color: var(--dual-blue); }
+        .logo .l-orange { color: var(--accent-orange); }
+
+        .nav-menu { display: flex; gap: 12px; align-items: center; }
+        .nav-menu a { color: var(--dual-blue); text-decoration: none; font-size: 0.8rem; font-weight: 900; cursor: pointer; text-transform: uppercase; }
+
+        /* CARRITO EN HEADER (PC) */
+        #cart-header-btn {
+            display: none;
+            background: var(--accent-orange);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.4s;
+        }
+        #cart-header-btn.visible { display: flex; animation: slideInRight 0.4s ease-out; }
+        @keyframes slideInRight { from { transform: translateX(50px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* VISTAS */
+        #cat-view { display: none; }
+        main { display: block; }
+        #cat-view:target { display: block; }
+        #cat-view:target ~ main { display: none; }
+
+        .hero {
+            height: 60vh;
+            background-color: var(--dual-blue);
+            display: flex; align-items: center; justify-content: center; text-align: center; color: #fff;
+            padding: 0 2rem;
+            background-image: radial-gradient(circle at center, #1a2a4a 0%, #081A3A 100%);
+        }
+
+        .hero-main-text { font-size: 3rem; font-weight: 900; letter-spacing: -1px; line-height: 1.1; margin-bottom: 1.5rem; text-transform: uppercase; }
+        .hero-sub { font-size: 1rem; font-family: sans-serif; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-orange); margin-bottom: 1rem; }
+        
+        .btn-primary { background: var(--accent-orange); color: white; padding: 1rem 2rem; border-radius: 50px; text-decoration: none; font-size: 1rem; font-weight: 900; cursor: pointer; border: none; transition: transform 0.2s; display: inline-block; }
+        .btn-primary:active { transform: scale(0.95); }
+
+        .section { padding: 4rem 1.5rem; max-width: 1200px; margin: 0 auto; }
+        .section-header { margin-bottom: 3rem; text-align: center; }
+        .section-header h2 { font-size: 2rem; margin: 0; color: var(--dual-blue); text-transform: uppercase; }
+        .section-header::after { content: ""; display: block; width: 60px; height: 4px; background: var(--accent-orange); margin: 15px auto; }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card { 
+            position: relative; border: none; padding: 25px; border-radius: 15px; text-align: center; 
+            background: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: transform 0.3s;
+        }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        
+        .p-img { height: 200px; display: flex; align-items: center; justify-content: center; padding: 10px; margin-bottom: 15px; cursor: pointer; }
+        .p-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        
+        .price { color: var(--accent-orange); font-size: 1.4rem; font-weight: 900; margin-top: 10px; }
+        .product-card h3 { font-size: 1.1rem; margin: 10px 0; color: var(--dual-blue); text-transform: uppercase; cursor: pointer; }
+
+        /* MODALES */
+        .product-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 2000;
+            display: none; align-items: center; justify-content: center;
+            padding: 1.5rem; backdrop-filter: blur(5px);
+        }
+        .modal-active { display: flex; }
+        .close-modal-btn { position: absolute; top: 20px; right: 20px; color: white; font-size: 2.5rem; cursor: pointer; z-index: 2001; }
+        .detail-container { max-width: 900px; width: 100%; display: grid; grid-template-columns: 1fr; gap: 2rem; background: white; padding: 2.5rem; border-radius: 20px; position: relative; overflow-y: auto; max-height: 90vh; text-align: center; }
+
+        /* CONTROLES CANTIDAD MODAL */
+        .qty-control { display: flex; align-items: center; justify-content: center; gap: 15px; margin: 20px 0; }
+        .qty-btn { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--dual-blue); background: white; color: var(--dual-blue); font-size: 1.5rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .qty-val { font-size: 1.4rem; width: 30px; font-weight: 900; }
+
+        .add-to-cart-btn { background: var(--dual-blue); color: white; width: 100%; padding: 1.2rem; border-radius: 50px; border: none; font-weight: 900; text-transform: uppercase; cursor: pointer; font-size: 1rem; transition: transform 0.1s; }
+        .add-to-cart-btn:active { transform: scale(0.95); }
+        .buy-now-wa { background: transparent; color: var(--wa-green); border: none; font-weight: 900; text-transform: uppercase; cursor: pointer; font-size: 0.8rem; margin-top: 15px; text-decoration: underline; }
+
+        /* CARRITO FLOTANTE (MÓVIL) */
+        #cart-float-btn {
+            position: fixed; bottom: 30px; right: 30px;
+            background: var(--accent-orange); color: white;
+            width: 65px; height: 65px; border-radius: 50%;
+            display: none; align-items: center; justify-content: center;
+            box-shadow: 0 5px 20px rgba(255,106,0,0.4);
+            z-index: 1500; cursor: pointer;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        #cart-float-btn.visible { display: flex; }
+        .cart-count { position: absolute; top: 0; right: 0; background: var(--dual-blue); color: white; width: 22px; height: 22px; border-radius: 50%; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; border: 2px solid white; }
+
+        /* VENTANA REVISIÓN CARRITO */
+        #cart-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); z-index: 3000;
+            display: none; align-items: center; justify-content: center; padding: 1rem;
+        }
+        .cart-window { background: white; width: 100%; max-width: 450px; border-radius: 25px; overflow: hidden; animation: slideUp 0.3s ease-out; }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .cart-header { background: var(--dual-blue); color: white; padding: 1.2rem; display: flex; justify-content: space-between; align-items: center; }
+        .cart-items { padding: 1rem; max-height: 350px; overflow-y: auto; }
+        .c-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #eee; }
+        .c-item-info { flex-grow: 1; text-align: left; }
+        .c-item-name { font-size: 0.85rem; font-weight: 900; color: var(--dual-blue); }
+        .c-item-price { font-size: 0.8rem; color: var(--accent-orange); }
+        .c-qty-control { display: flex; align-items: center; gap: 8px; }
+        .btn-mini { width: 25px; height: 25px; border-radius: 50%; border: 1px solid #ccc; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+        .count { font-size: 0.9rem; width: 15px; text-align: center; }
+
+        .cart-footer { padding: 1.5rem; background: #f9f9f9; text-align: center; }
+        .total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; font-weight: 900; }
+        .btn-finish { background: var(--wa-green); color: white; width: 100%; padding: 1.1rem; border-radius: 50px; border: none; font-weight: 900; cursor: pointer; font-size: 1rem; box-shadow: 0 4px 15px rgba(37,211,102,0.3); }
+        .btn-empty { background: transparent; color: #999; border: none; font-size: 0.75rem; cursor: pointer; text-decoration: underline; margin-top: 15px; }
+
+        /* ANIMACIÓN +1 */
+        .plus-one { position: fixed; color: var(--accent-orange); font-weight: 900; font-size: 1.2rem; pointer-events: none; z-index: 5000; animation: fadeUp 0.6s ease-out forwards; }
+        @keyframes fadeUp { from { transform: translateY(0); opacity: 1; } to { transform: translateY(-50px); opacity: 0; } }
+
+        @media (min-width: 768px) {
+            .hero-main-text { font-size: 5rem; }
+            .detail-container { grid-template-columns: 1fr 1fr; align-items: center; text-align: left; }
+            .product-grid { grid-template-columns: repeat(3, 1fr); }
+            #cat-view .product-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        @media (max-width: 767px) {
+            main .product-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 0; }
+            #cat-view .product-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            main .product-card { padding: 10px 5px; }
+            main .product-card h3 { font-size: 0.7rem; }
+            main .price { font-size: 0.8rem; }
+            main .p-img { height: 100px; }
+        }
+
+        footer { text-align: center; padding: 4rem; color: #888; font-size: 0.9rem; background: #eee; margin-top: 4rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo"><span class="l-dual">DUAL</span><span class="l-orange">ROBOTICS</span></a>
+            <nav class="nav-menu">
+                <a href="#" class="home-btn">Inicio</a> <a href="https://wa.me/573206229042">Contacto</a>
+                
+                <div id="cart-header-btn" onclick="toggleCart()">🛒 <span id="cart-total-header">$0</span></div>
+            </nav>
+        </div>
+    </header>
+
+    <div id="cat-view">
+        <div class="section">
+            <div class="section-header"><h2>Catálogo Completo</h2></div>
+            <div class="product-grid" id="full-catalog"></div>
+        </div>
+    </div>
+
+    <main>
+        <div class="hero">
+            <div>
+                <div class="hero-sub">Componentes de Robótica</div>
+                <h1 class="hero-main-text">CONSTRUYE EL<br>FUTURO</h1>
+                <div class="hero-btns">
+                    <a href="#cat-view" class="btn-primary">VER CATÁLOGO</a>
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-header"><h2>Destacados</h2></div>
+            <div class="product-grid" id="featured-grid"></div>
+        </div>
+    </main>
+
+    <div id="cart-float-btn" onclick="toggleCart()">
+        <span style="font-size:1.5rem">🛒</span>
+        <div class="cart-count" id="cart-count-float">0</div>
+    </div>
+
+    <div id="product-modal" class="product-modal">
+        <div class="close-modal-btn" onclick="closeModal()">×</div>
+        <div id="modal-content" class="detail-container"></div>
+    </div>
+
+    <div id="cart-overlay" onclick="if(event.target==this) toggleCart()">
+        <div class="cart-window">
+            <div class="cart-header">
+                <h2>Tu Pedido</h2>
+                <div class="close-btn" onclick="toggleCart()">×</div>
+            </div>
+            <div class="cart-items" id="cart-items-list"></div>
+            <div class="cart-footer">
+                <div class="total-row">
+                    <span>TOTAL ESTIMADO:</span>
+                    <span id="cart-total-final">$0</span>
+                </div>
+                <button class="btn-finish" onclick="checkoutWA()">FINALIZAR POR WHATSAPP</button>
+                <button class="btn-empty" onclick="clearCart()">🗑️ Vaciar todo el carrito</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>&copy; 2026 DUAL ROBOTICS — Tecnología para el Futuro</footer>
+
+    <script>
+        const products = [
+            {id:1, name:"Motor TT Plástico", price:12000, img:"https://via.placeholder.com/300?text=Dual+Robotics", desc:"Diseñado para la agilidad. Ideal para robots ligeros y seguidores de línea."},
+            {id:2, name:"Motor TT Metálico", price:25000, img:"https://via.placeholder.com/300?text=Dual+Robotics", desc:"Potencia extrema. Engranajes de acero para soportar cargas pesadas y máximo torque."},
+            {id:3, name:"Sensor Ultrasónico", price:16000, img:"img/sensor_ultrasonico.jpg", desc:"El ojo de tu robot. Detecta obstáculos y mide distancias con precisión."},
+            {id:4, name:"Módulo L298N", price:20900, img:"https://via.placeholder.com/300?text=Dual+Robotics", desc:"Driver esencial para controlar velocidad y giro de dos motores DC."},
+            {id:5, name:"Bluetooth HC-06", price:27700, img:"https://via.placeholder.com/300?text=Dual+Robotics", desc:"Control inalámbrico desde tu celular con conexión estable."},
+            {id:6, name:"Arduino Uno R3", price:57600, img:"https://via.placeholder.com/300?text=Dual+Robotics", desc:"La placa más versátil para aprender y programar robots."},
+            {id:7, name:"Arduino Nano", price:48900, img:"https://via.placeholder.com/300?text=Dual+Robotics", desc:"Todo el poder de Arduino en un tamaño ultra compacto."},
+            {id:8, name:"Servo SG90", price:16300, img:"https://via.placeholder.com/300?text=Dual+Robotics", desc:"Precisión para brazos robóticos y mecanismos de ángulo exacto."},
+            {id:9, name:"Batería 18650", price:24500, img:"https://via.placeholder.com/300?text=Dual+Robotics", desc:"Celda de litio recargable de 1700mAh para largas horas de uso."},
+            {id:10, name:"Portabaterías (3 celdas)", price:11000, img:"https://via.placeholder.com/300?text=Dual+Robotics", desc:"Conecta 3 baterías 18650 en serie para el voltaje ideal."},
+            {id:11, name:"Protoboard 400", price:10100, img:"https://via.placeholder.com/300?text=Dual+Robotics", desc:"Tablero ideal para prototipar sin necesidad de soldar."},
+            {id:13, name:"Módulo TP4056", price:8500, img:"https://via.placeholder.com/300?text=Dual+Robotics", desc:"Cargador inteligente con protección para baterías de litio."},
+            {id:14, name:"Sensor TCRT5000", price:21800, img:"https://via.placeholder.com/300?text=Dual+Robotics", desc:"Infrarrojo de alta precisión para seguimiento de línea."},
+            {id:15, name:"Rueda Motor TT", price:8500, img:"https://via.placeholder.com/300?text=Dual+Robotics", desc:"Goma con excelente tracción para cualquier motor tipo TT."},
+            {id:16, name:"Cable AWG22", price:2000, img:"img/cable_awg22.jpg", desc:"Flexible y de alta calidad para conexiones internas seguras."},
+            {id:17, name:"Dupont Macho-Macho (X20)", price:8500, img:"img/dupont_mm.jpg", desc:"Pack de 20 cables para conexiones seguras en protoboard."},
+            {id:18, name:"Dupont Hembra-Hembra (X20)", price:8500, img:"img/dupont_hh.jpg", desc:"Pack de 20 cables para interconectar sensores y módulos."},
+            {id:19, name:"Dupont Macho-Hembra (X20)", price:8500, img:"img/dupont_mh.jpg", desc:"Pack de 20 cables para extender conexiones a sensores externos."},
+            {id:20, name:"ESP32 NodeMCU 38 Pines", price:43900, img:"https://via.placeholder.com/300?text=Dual+Robotics", desc:"Desarrolla proyectos IoT, domótica y robótica. Con WiFi y Bluetooth integrados, es ideal para conectar tus proyectos a internet. ✔ Compatible con Arduino IDE."},
+            {id:21, name:"SHIELD L293D", price:24900, img:"img/l293d_shield.jpg", desc:"Shield L293D para Arduino Uno. Controla motores DC y paso a paso de forma sencilla. Ideal para robótica educativa, robots sumo y proyectos de automatización."},
+        ];
+
+        let cart = JSON.parse(localStorage.getItem('dual_cart')) || [];
+        let currentModalQty = 1;
+
+        function format(num) { return '$' + num.toLocaleString('de-DE'); }
+
+        function renderGrids() {
+            const full = document.getElementById('full-catalog');
+            const feat = document.getElementById('featured-grid');
+            full.innerHTML = feat.innerHTML = '';
+            
+            products.forEach(p => {
+                const card = `<div class="product-card">
+                    <div class="p-img" onclick="openProduct(${p.id})"><img src="${p.img}"></div>
+                    <h3 onclick="openProduct(${p.id})">${p.name}</h3>
+                    <div class="price">${format(p.price)}</div>
+                </div>`;
+                full.innerHTML += card;
+                if([6, 2, 5].includes(p.id)) feat.innerHTML += card;
+            });
+        }
+
+        function openProduct(id) {
+            const p = products.find(x => x.id === id);
+            currentModalQty = 1;
+            const inCart = cart.find(x => x.id === id);
+            const hint = inCart ? `<div style="font-size:0.7rem; color:#888; margin-top:10px;">Ya tienes ${inCart.qty} en el carrito</div>` : '';
+            
+            document.getElementById('modal-content').innerHTML = `
+                <div><img src="${p.img}" style="max-width:100%; border-radius:15px;"></div>
+                <div>
+                    <h2>${p.name}</h2>
+                    <div class="price">${format(p.price)}</div>
+                    <p style="font-family:sans-serif; font-size:0.9rem; color:#666; line-height:1.4;">${p.desc}</p>
+                    <div class="qty-control">
+                        <button class="qty-btn" onclick="updateModalQty(-1)">-</button>
+                        <div class="qty-val" id="m-qty">1</div>
+                        <button class="qty-btn" onclick="updateModalQty(1)">+</button>
+                    </div>
+                    <button class="add-to-cart-btn" onclick="addToCart(${p.id}, event)">AÑADIR AL CARRITO</button>
+                    <button class="buy-now-wa" onclick="buyNowWA(${p.id})">Comprar solo este (WhatsApp)</button>
+                    ${hint}
+                </div>
+            `;
+            document.getElementById('product-modal').classList.add('modal-active');
+        }
+
+        function updateModalQty(v) {
+            currentModalQty = Math.max(1, currentModalQty + v);
+            document.getElementById('m-qty').innerText = currentModalQty;
+        }
+
+        function closeModal() { document.getElementById('product-modal').classList.remove('modal-active'); }
+
+        function addToCart(id, e) {
+            const p = products.find(x => x.id === id);
+            const inCart = cart.find(x => x.id === id);
+            if(inCart) inCart.qty += currentModalQty;
+            else cart.push({...p, qty: currentModalQty});
+            
+            // Animación +1
+            const plus = document.createElement('div');
+            plus.className = 'plus-one';
+            plus.innerText = '+' + currentModalQty;
+            plus.style.left = e.clientX + 'px';
+            plus.style.top = e.clientY + 'px';
+            document.body.appendChild(plus);
+            setTimeout(() => plus.remove(), 600);
+
+            saveCart();
+            closeModal();
+        }
+
+        function saveCart() {
+            localStorage.setItem('dual_cart', JSON.stringify(cart));
+            updateUI();
+        }
+
+        function updateUI() {
+            const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+            const count = cart.reduce((s, i) => s + i.qty, 0);
+
+            // Header PC
+            const hBtn = document.getElementById('cart-header-btn');
+            if(count > 0) {
+                hBtn.classList.add('visible');
+                document.getElementById('cart-total-header').innerText = format(total);
+            } else {
+                hBtn.classList.remove('visible');
+            }
+
+            // Float Móvil
+            const fBtn = document.getElementById('cart-float-btn');
+            if(count > 0) {
+                fBtn.classList.add('visible');
+                document.getElementById('cart-count-float').innerText = count;
+            } else {
+                fBtn.classList.remove('visible');
+            }
+
+            // Lista del Carrito
+            const list = document.getElementById('cart-items-list');
+            list.innerHTML = '';
+            cart.forEach(i => {
+                list.innerHTML += `
+                    <div class="c-item">
+                        <div class="c-item-info">
+                            <div class="c-item-name">${i.name}</div>
+                            <div class="c-item-price">${format(i.price * i.qty)}</div>
+                        </div>
+                        <div class="c-qty-control">
+                            <button class="btn-mini" onclick="changeQty(${i.id}, -1)">-</button>
+                            <div class="count">${i.qty}</div>
+                            <button class="btn-mini" onclick="changeQty(${i.id}, 1)">+</button>
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('cart-total-final').innerText = format(total);
+        }
+
+        function changeQty(id, v) {
+            const i = cart.find(x => x.id === id);
+            i.qty += v;
+            if(i.qty <= 0) cart = cart.filter(x => x.id !== id);
+            saveCart();
+        }
+
+        function toggleCart() {
+            const ov = document.getElementById('cart-overlay');
+            ov.style.display = (ov.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        function clearCart() {
+            if(confirm('¿Seguro que quieres vaciar tu carrito?')) {
+                cart = [];
+                saveCart();
+                toggleCart();
+            }
+        }
+
+        function checkoutWA() {
+            let msg = "Hola Dual Robotics, quiero hacer el siguiente pedido:\n\n";
+            cart.forEach(i => {
+                msg += `- ${i.qty}x ${i.name} (${format(i.price * i.qty)})\n`;
+            });
+            const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+            msg += `\n*TOTAL: ${format(total)}*`;
+            window.open(`https://wa.me/573206229042?text=${encodeURIComponent(msg)}`);
+        }
+
+        function buyNowWA(id) {
+            const p = products.find(x => x.id === id);
+            const msg = `Hola Dual Robotics, quiero el producto ${p.name.toUpperCase()} (Cantidad: ${currentModalQty}) por favor.`;
+            window.open(`https://wa.me/573206229042?text=${encodeURIComponent(msg)}`);
+        }
+
+        renderGrids();
+        updateUI();
+    </script>
+
+        </body>
+</html>
+
+
+
+
+
+
+
+
+
+
