@@ -307,7 +307,6 @@
                     <h2>${p.name}</h2>
                     <div class="price">${format(p.price)}</div>
                     <p style="font-family:sans-serif; font-size:0.9rem; color:#666; line-height:1.4;">${p.desc}</p>
-                    <div class="stock-info ${p.stockStatus === 'disponible' ? 'available' : 'out'}"><span class="stock-dot"></span>${p.stockStatus === 'disponible' ? 'Disponible para entrega inmediata' : 'AGOTADO TEMPORALMENTE'}</div>
                     <div class="qty-control">
                         <button class="qty-btn" onclick="updateModalQty(-1)">-</button>
                         <div class="qty-val" id="m-qty">1</div>
@@ -315,6 +314,7 @@
                     </div>
                     <button class="add-to-cart-btn" ${p.stockStatus !== 'disponible' ? 'disabled' : ''} onclick="addToCart(${p.id}, event)">${p.stockStatus !== 'disponible' ? 'AGOTADO TEMPORALMENTE' : 'AÑADIR AL CARRITO'}</button>
                     <button class="buy-now-wa" ${p.stockStatus !== 'disponible' ? 'disabled' : ''} onclick="buyNowWA(${p.id})">${p.stockStatus !== 'disponible' ? 'AGOTADO TEMPORALMENTE' : 'Comprar solo este (WhatsApp)'}</button>
+                    <div class="stock-info ${p.stockStatus === 'disponible' ? 'available' : 'out'}"><span class="stock-dot"></span>${p.stockStatus === 'disponible' ? 'Disponible para entrega inmediata' : 'AGOTADO TEMPORALMENTE'}</div>
                     ${hint}
                 </div>
             `;
