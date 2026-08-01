@@ -114,6 +114,15 @@
         .add-to-cart-btn:active { transform: scale(0.95); }
         .buy-now-wa { background: transparent; color: var(--wa-green); border: none; font-weight: 900; text-transform: uppercase; cursor: pointer; font-size: 0.8rem; margin-top: 15px; text-decoration: underline; }
 
+
+        .stock-info { font-family: sans-serif; font-size: 0.82rem; font-weight: 800; margin: 14px 0 0; }
+        .stock-info.available { color: #27ae60; }
+        .stock-info.out { color: #d35400; }
+        .stock-dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; background:currentColor; }
+        .add-to-cart-btn:disabled, .buy-now-wa:disabled { cursor:not-allowed; opacity:1; }
+        .add-to-cart-btn:disabled { background:#777; color:#fff; }
+        .buy-now-wa:disabled { color:#777; text-decoration:none; }
+
         /* CARRITO FLOTANTE (MÓVIL) */
         #cart-float-btn {
             position: fixed; bottom: 30px; right: 30px;
@@ -242,27 +251,27 @@
 
     <script>
                 const products = [
-            {id:1, name:"Motor TT Plástico", price:10100, img:"img/motor_tt_plastico.jpg", desc:"Motorreductor estándar 1:48 ideal para proyectos de robótica móvil."},
-            {id:2, name:"Motor TT Metálico", price:25000, img:"img/motor_tt_metalico.jpg", desc:"Potencia extrema. Engranajes de acero para soportar cargas pesadas y máximo torque."},
-            {id:3, name:"Sensor Ultrasónico", price:16000, img:"img/sensor_ultrasonico.jpg", desc:"El ojo de tu robot. Detecta obstáculos y mide distancias con precisión."},
-            {id:4, name:"Módulo L298N", price:20000, img:"img/l298n.jpg", desc:"Driver de motores Puente H para controlar velocidad y dirección de 2 motores DC."},
-            {id:5, name:"Bluetooth HC-06", price:38000, img:"img/bluetooth_hc06.jpg", desc:"Módulo de comunicación inalámbrica para control remoto desde el celular."},
-            {id:6, name:"Arduino Uno R3", price:57600, img:"img/arduino_uno_r3.jpg", desc:"La placa más versátil para aprender y programar robots."},
-            {id:7, name:"Arduino Nano + Cable", price:48900, img:"img/arduino_nano.jpg", desc:"Todo el poder de Arduino en un tamaño ultra compacto."},
-            {id:8, name:"Servo SG90", price:16300, img:"img/servo_sg90.jpg", desc:"Precisión para brazos robóticos y mecanismos de ángulo exacto."},
-            {id:9, name:"Batería 18650", price:24500, img:"img/bateria_18650.jpg", desc:"Celda de litio recargable de 1700mAh para largas horas de uso."},
-            {id:10, name:"Portabaterías (3 celdas)", price:11000, img:"img/portabaterias_18650.jpg", desc:"Conecta 3 baterías 18650 en serie para el voltaje ideal."},
-            {id:11, name:"Protoboard 400", price:10100, img:"img/protoboard_400.jpg", desc:"Tablero ideal para prototipar sin necesidad de soldar."},
-            {id:13, name:"Módulo TP4056", price:8500, img:"img/tp4056_usb_c.jpg", desc:"Cargador inteligente con protección para baterías de litio."},
-            {id:14, name:"Sensor TCRT5000", price:21800, img:"img/sensor_tcrt5000_triple.jpg", desc:"Infrarrojo de alta precisión para seguimiento de línea."},
-            {id:15, name:"Rueda Motor TT", price:8500, img:"img/rueda_motor_tt.jpg", desc:"Goma con excelente tracción para cualquier motor tipo TT."},
-            {id:16, name:"Cable AWG22", price:2000, img:"img/cable_awg22.jpg", desc:"Flexible y de alta calidad para conexiones internas seguras."},
-            {id:17, name:"Dupont Macho-Macho (X20)", price:8500, img:"img/dupont_mm.jpg", desc:"Pack de 20 cables para conexiones seguras en protoboard."},
-            {id:18, name:"Dupont Hembra-Hembra (X20)", price:8500, img:"img/dupont_hh.jpg", desc:"Pack de 20 cables para interconectar sensores y módulos."},
-            {id:19, name:"Dupont Macho-Hembra (X20)", price:8500, img:"img/dupont_mh.jpg", desc:"Pack de 20 cables para extender conexiones a sensores externos."},
-            {id:20, name:"ESP32 NodeMCU 38 Pines", price:43900, img:"img/esp32_wroom.jpg", desc:"Desarrolla proyectos IoT, domótica y robótica. Con WiFi y Bluetooth integrados."},
-            {id:21, name:"SHIELD L293D", price:24900, img:"img/l293d_shield.jpg", desc:"Shield L293D para Arduino Uno. Controla motores DC y paso a paso."},
-            {id:22, name:"Cargador de Baterías 18650 (Doble)", price:23200, img:"img/cargador_18650_pared.webp", desc:"Cargador de pared con cable integrado para dos celdas 18650. Indicadores LED de estado y protección contra sobrecarga."},
+            {id:1, name:"Motor TT Plástico", price:10100, img:"img/motor_tt_plastico.jpg", desc:"Motorreductor estándar 1:48 ideal para proyectos de robótica móvil.", stockStatus:"agotado", stock:0},
+            {id:2, name:"Motor TT Metálico", price:25000, img:"img/motor_tt_metalico.jpg", desc:"Potencia extrema. Engranajes de acero para soportar cargas pesadas y máximo torque.", stockStatus:"disponible", stock:7},
+            {id:3, name:"Sensor Ultrasónico", price:16000, img:"img/sensor_ultrasonico.jpg", desc:"El ojo de tu robot. Detecta obstáculos y mide distancias con precisión.", stockStatus:"disponible", stock:21},
+            {id:4, name:"Módulo L298N", price:20000, img:"img/l298n.jpg", desc:"Driver de motores Puente H para controlar velocidad y dirección de 2 motores DC.", stockStatus:"disponible", stock:10},
+            {id:5, name:"Bluetooth HC-06", price:38000, img:"img/bluetooth_hc06.jpg", desc:"Módulo de comunicación inalámbrica para control remoto desde el celular.", stockStatus:"agotado", stock:0},
+            {id:6, name:"Arduino Uno R3", price:57600, img:"img/arduino_uno_r3.jpg", desc:"La placa más versátil para aprender y programar robots.", stockStatus:"agotado", stock:0},
+            {id:7, name:"Arduino Nano + Cable", price:48900, img:"img/arduino_nano.jpg", desc:"Todo el poder de Arduino en un tamaño ultra compacto.", stockStatus:"disponible", stock:16},
+            {id:8, name:"Servo SG90", price:16300, img:"img/servo_sg90.jpg", desc:"Precisión para brazos robóticos y mecanismos de ángulo exacto.", stockStatus:"disponible", stock:22},
+            {id:9, name:"Batería 18650", price:24500, img:"img/bateria_18650.jpg", desc:"Celda de litio recargable de 1700mAh para largas horas de uso.", stockStatus:"disponible", stock:23},
+            {id:10, name:"Portabaterías (3 celdas)", price:11000, img:"img/portabaterias_18650.jpg", desc:"Conecta 3 baterías 18650 en serie para el voltaje ideal.", stockStatus:"disponible", stock:8},
+            {id:11, name:"Protoboard 400", price:10100, img:"img/protoboard_400.jpg", desc:"Tablero ideal para prototipar sin necesidad de soldar.", stockStatus:"disponible", stock:12},
+            {id:13, name:"Módulo TP4056", price:8500, img:"img/tp4056_usb_c.jpg", desc:"Cargador inteligente con protección para baterías de litio.", stockStatus:"disponible", stock:45},
+            {id:14, name:"Sensor TCRT5000", price:21800, img:"img/sensor_tcrt5000_triple.jpg", desc:"Infrarrojo de alta precisión para seguimiento de línea.", stockStatus:"disponible", stock:8},
+            {id:15, name:"Rueda Motor TT", price:8500, img:"img/rueda_motor_tt.jpg", desc:"Goma con excelente tracción para cualquier motor tipo TT.", stockStatus:"disponible", stock:50},
+            {id:16, name:"Cable AWG22", price:2000, img:"img/cable_awg22.jpg", desc:"Flexible y de alta calidad para conexiones internas seguras.", stockStatus:"disponible", stock:41},
+            {id:17, name:"Dupont Macho-Macho (X20)", price:8500, img:"img/dupont_mm.jpg", desc:"Pack de 20 cables para conexiones seguras en protoboard.", stockStatus:"disponible", stock:24},
+            {id:18, name:"Dupont Hembra-Hembra (X20)", price:8500, img:"img/dupont_hh.jpg", desc:"Pack de 20 cables para interconectar sensores y módulos.", stockStatus:"disponible", stock:26},
+            {id:19, name:"Dupont Macho-Hembra (X20)", price:8500, img:"img/dupont_mh.jpg", desc:"Pack de 20 cables para extender conexiones a sensores externos.", stockStatus:"disponible", stock:26},
+            {id:20, name:"ESP32 NodeMCU 38 Pines", price:43900, img:"img/esp32_wroom.jpg", desc:"Desarrolla proyectos IoT, domótica y robótica. Con WiFi y Bluetooth integrados.", stockStatus:"disponible", stock:23},
+            {id:21, name:"SHIELD L293D", price:24900, img:"img/l293d_shield.jpg", desc:"Shield L293D para Arduino Uno. Controla motores DC y paso a paso.", stockStatus:"disponible", stock:9},
+            {id:22, name:"Cargador de Baterías 18650 (Doble)", price:23200, img:"img/cargador_18650_pared.webp", desc:"Cargador de pared con cable integrado para dos celdas 18650. Indicadores LED de estado y protección contra sobrecarga.", stockStatus:"disponible", stock:10},
         ];
 
         let cart = JSON.parse(localStorage.getItem('dual_cart')) || [];
@@ -298,13 +307,14 @@
                     <h2>${p.name}</h2>
                     <div class="price">${format(p.price)}</div>
                     <p style="font-family:sans-serif; font-size:0.9rem; color:#666; line-height:1.4;">${p.desc}</p>
+                    <div class="stock-info ${p.stockStatus === 'disponible' ? 'available' : 'out'}"><span class="stock-dot"></span>${p.stockStatus === 'disponible' ? 'Disponible para entrega inmediata' : 'AGOTADO TEMPORALMENTE'}</div>
                     <div class="qty-control">
                         <button class="qty-btn" onclick="updateModalQty(-1)">-</button>
                         <div class="qty-val" id="m-qty">1</div>
                         <button class="qty-btn" onclick="updateModalQty(1)">+</button>
                     </div>
-                    <button class="add-to-cart-btn" onclick="addToCart(${p.id}, event)">AÑADIR AL CARRITO</button>
-                    <button class="buy-now-wa" onclick="buyNowWA(${p.id})">Comprar solo este (WhatsApp)</button>
+                    <button class="add-to-cart-btn" ${p.stockStatus !== 'disponible' ? 'disabled' : ''} onclick="addToCart(${p.id}, event)">${p.stockStatus !== 'disponible' ? 'AGOTADO TEMPORALMENTE' : 'AÑADIR AL CARRITO'}</button>
+                    <button class="buy-now-wa" ${p.stockStatus !== 'disponible' ? 'disabled' : ''} onclick="buyNowWA(${p.id})">${p.stockStatus !== 'disponible' ? 'AGOTADO TEMPORALMENTE' : 'Comprar solo este (WhatsApp)'}</button>
                     ${hint}
                 </div>
             `;
@@ -320,6 +330,7 @@
 
         function addToCart(id, e) {
             const p = products.find(x => x.id === id);
+            if (p.stockStatus !== 'disponible') return;
             const inCart = cart.find(x => x.id === id);
             if(inCart) inCart.qty += currentModalQty;
             else cart.push({...p, qty: currentModalQty});
