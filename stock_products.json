@@ -1,23 +1,114 @@
 {
-  "1": {"urls": ["https://www.cvrelectronica.com/description/?product_id=1038"]},
-  "2": {"urls": ["https://www.cvrelectronica.com/description/?product_id=1402"]},
-  "3": {"urls": ["https://www.cvrelectronica.com/description/?product_id=10"]},
-  "4": {"urls": ["https://www.cvrelectronica.com/description/?product_id=165"]},
-  "5": {"urls": ["https://www.cvrelectronica.com/description/?product_id=890"]},
-  "6": {"urls": ["https://www.cvrelectronica.com/description/?product_id=522"]},
-  "7": {"urls": ["https://www.cvrelectronica.com/description/?product_id=217"]},
-  "8": {"urls": ["https://www.cvrelectronica.com/description/?product_id=43"]},
-  "9": {"urls": ["https://www.cvrelectronica.com/description/?product_id=903"]},
-  "10": {"urls": ["https://www.cvrelectronica.com/description/?product_id=1042"]},
-  "11": {"urls": ["https://www.cvrelectronica.com/description/?product_id=541"]},
-  "13": {"urls": ["https://www.cvrelectronica.com/description/?product_id=549"]},
-  "14": {"urls": ["https://www.cvrelectronica.com/description/?product_id=398"]},
-  "15": {"urls": ["https://www.cvrelectronica.com/description/?product_id=1031"]},
-  "16": {"urls": ["https://www.cvrelectronica.com/description/?product_id=881", "https://www.cvrelectronica.com/description/?product_id=882"], "require_all": true},
-  "17": {"urls": ["https://www.cvrelectronica.com/description/?product_id=848"]},
-  "18": {"urls": ["https://www.cvrelectronica.com/description/?product_id=980"]},
-  "19": {"urls": ["https://www.cvrelectronica.com/description/?product_id=1032"]},
-  "20": {"urls": ["https://www.cvrelectronica.com/description/?product_id=1094"]},
-  "21": {"urls": ["https://www.cvrelectronica.com/description/?product_id=262"]},
-  "22": {"urls": ["https://www.cvrelectronica.com/description/?product_id=1211"]}
+  "1": {
+    "urls": [
+      "https://www.cvrelectronica.com/description/?product_id=1038"
+    ]
+  },
+  "2": {
+    "urls": [
+      "https://www.cvrelectronica.com/description/?product_id=1402"
+    ]
+  },
+  "3": {
+    "urls": [
+      "https://www.cvrelectronica.com/description/?product_id=10"
+    ]
+  },
+  "4": {
+    "urls": [
+      "https://www.cvrelectronica.com/description/?product_id=165"
+    ]
+  },
+  "5": {
+    "urls": [
+      "https://www.cvrelectronica.com/description/?product_id=890"
+    ]
+  },
+  "6": {
+    "urls": [
+      "https://www.cvrelectronica.com/description/?product_id=522"
+    ]
+  },
+  "7": {
+    "urls": [
+      "https://www.cvrelectronica.com/description/?product_id=217"
+    ]
+  },
+  "8": {
+    "urls": [
+      "https://www.cvrelectronica.com/description/?product_id=43"
+    ]
+  },
+  "9": {
+    "urls": [
+      "https://www.cvrelectronica.com/description/?product_id=903"
+    ]
+  },
+  "10": {
+    "urls": [
+      "https://www.cvrelectronica.com/description/?product_id=1042"
+    ]
+  },
+  "11": {
+    "urls": [
+      "https://www.cvrelectronica.com/description/?product_id=541"
+    ]
+  },
+  "13": {
+    "urls": [
+      "https://www.cvrelectronica.com/description/?product_id=549"
+    ]
+  },
+  "14": {
+    "urls": [
+      "https://www.cvrelectronica.com/description/?product_id=398"
+    ]
+  },
+  "15": {
+    "urls": [
+      "https://www.cvrelectronica.com/description/?product_id=1031"
+    ]
+  },
+  "16": {
+    "urls": [
+      "https://www.cvrelectronica.com/description/?product_id=881",
+      "https://www.cvrelectronica.com/description/?product_id=882"
+    ],
+    "require_all": true
+  },
+  "17": {
+    "urls": [
+      "https://www.cvrelectronica.com/description/?product_id=848"
+    ]
+  },
+  "18": {
+    "urls": [
+      "https://www.cvrelectronica.com/description/?product_id=980"
+    ]
+  },
+  "19": {
+    "urls": [
+      "https://www.cvrelectronica.com/description/?product_id=1032"
+    ]
+  },
+  "20": {
+    "urls": [
+      "https://www.cvrelectronica.com/description/?product_id=1094"
+    ]
+  },
+  "21": {
+    "urls": [
+      "https://www.cvrelectronica.com/description/?product_id=262"
+    ]
+  },
+  "22": {
+    "urls": [
+      "https://www.cvrelectronica.com/description/?product_id=1211"
+    ]
+  },
+  "23": {
+    "urls": [
+      "https://www.cvrelectronica.com/description/?product_id=1376"
+    ]
+  }
 }
