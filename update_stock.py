@@ -34,7 +34,7 @@ def main():
                 stocks.append(fetch(url))
                 time.sleep(0.4)
             stock = min(stocks) if cfg.get('require_all') else max(stocks)
-            result.setdefault('products', {})[pid] = {'status': 'disponible' if stock > 0 else 'agotado', 'stock': stock}
+            result.setdefault('products', {})[pid] = {'status': 'agotado' if stock == 0 else ('pocas' if stock <= 5 else 'disponible'), 'stock': stock}
         except Exception as exc:
             errors.append(f'{pid}: {exc}')
     if errors:
