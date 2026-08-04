@@ -89,6 +89,10 @@
     "23": {
       "status": "disponible",
       "stock": 2
+    },
+    "24": {
+      "status": "disponible",
+      "stock": 12
     }
   }
 }
