@@ -294,7 +294,7 @@
                     <div class="price">${format(p.price)}</div>
                 </div>`;
                 full.innerHTML += card;
-                if([6, 2, 5].includes(p.id)) feat.innerHTML += card;
+                if([23, 24, 20].includes(p.id) && p.stockStatus === 'disponible') feat.innerHTML += card;
             });
         }
 
