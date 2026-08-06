@@ -44,15 +44,18 @@ def main():
         result.pop('errors', None)
     STATUS.write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n')
     html = HTML.read_text()
-    for pid, data in result.get('products', {}).items():
-        pattern = rf'(\{{id:{re.escape(pid)}, name:.*?desc:.*?\}})(?=,)'
-        match = re.search(pattern, html)
-        if match:
-            obj = match.group(1)
-            obj = re.sub(r', stockStatus:"[^"]*", stock:\d+', '', obj)
-            obj += f', stockStatus:"{data["status"]}", stock:{int(data.get("stock", 0))}'
-            html = html[:match.start()] + obj + html[match.end():]
-    HTML.write_text(html)
+    # Reemplaza la línea completa de cada producto para evitar duplicar
+    # los campos de stock en ejecuciones posteriores.
+    lines = []
+    for line in html.splitlines():
+        for pid, data in result.get('products', {}).items():
+            pattern = rf'^(\s*)\{{id:{re.escape(pid)},\s*(.*?desc:"[^\"]*").*$'
+            match = re.match(pattern, line)
+            if match:
+                line = f'{match.group(1)}{{id:{pid}, {match.group(2)}, stockStatus:"{data["status"]}", stock:{int(data.get("stock", 0))}}},'
+                break
+        lines.append(line)
+    HTML.write_text("\n".join(lines) + "\n")
     print(f'Actualizados {len(result.get("products", {}))} productos. Errores: {len(errors)}')
 
 if __name__ == '__main__':
