@@ -318,7 +318,7 @@
                     </div>
                     <button class="add-to-cart-btn" ${p.stock <= 0 ? 'disabled' : ''} onclick="addToCart(${p.id}, event)">${p.stock <= 0 ? 'AGOTADO TEMPORALMENTE' : 'AÑADIR AL CARRITO'}</button>
                     <button class="buy-now-wa" ${p.stock <= 0 ? 'disabled' : ''} onclick="buyNowWA(${p.id})">${p.stock <= 0 ? 'AGOTADO TEMPORALMENTE' : 'Comprar solo este (WhatsApp)'}</button>
-                    <div class="stock-info ${p.stock <= 0 ? 'out' : (p.stock <= 5 ? 'low' : 'available')}"><span class="stock-dot"></span>${p.stock <= 0 ? 'AGOTADO TEMPORALMENTE' : (p.id === 1 ? 'Disponible para entrega inmediata' : 'Disponible bajo pedido')}</div>
+                    <div class="stock-info ${p.stock <= 0 ? 'out' : (p.stock <= 5 ? 'low' : 'available')}"><span class="stock-dot"></span>${p.stock <= 0 ? 'AGOTADO TEMPORALMENTE' : (p.stock <= 5 ? 'POCAS UNIDADES DISPONIBLES' : (p.id === 1 ? 'Disponible para entrega inmediata' : 'Disponible bajo pedido'))}</div>
                     ${hint}
                 </div>
             `;
