@@ -75,6 +75,9 @@
         .section-header { margin-bottom: 3rem; text-align: center; }
         .section-header h2 { font-size: 2rem; margin: 0; color: var(--dual-blue); text-transform: uppercase; }
         .section-header::after { content: ""; display: block; width: 60px; height: 4px; background: var(--accent-orange); margin: 15px auto; }
+        .catalog-search { display: block; width: min(680px, 100%); margin: 0 auto 2.5rem; padding: 1rem 1.25rem; border: 2px solid #dfe5ea; border-radius: 50px; background: white; color: var(--dual-blue); font-family: sans-serif; font-size: 1rem; outline: none; box-shadow: 0 4px 14px rgba(0,0,0,0.05); transition: border-color 0.2s, box-shadow 0.2s; }
+        .catalog-search:focus { border-color: var(--accent-orange); box-shadow: 0 4px 18px rgba(255,106,0,0.15); }
+        .catalog-empty { grid-column: 1 / -1; text-align: center; color: #666; font-family: sans-serif; padding: 2rem; }
 
         .product-grid {
             display: grid;
@@ -200,6 +203,7 @@
     <div id="cat-view">
         <div class="section">
             <div class="section-header"><h2>Catálogo Completo</h2></div>
+            <input id="catalog-search" class="catalog-search" type="search" placeholder="Busca por producto, categoría o uso..." aria-label="Buscar productos">
             <div class="product-grid" id="full-catalog"></div>
         </div>
     </div>
@@ -295,21 +299,26 @@
 
         function format(num) { return '$' + num.toLocaleString('de-DE'); }
 
-        function renderGrids() {
+        function renderGrids(query = '') {
             const full = document.getElementById('full-catalog');
             const feat = document.getElementById('featured-grid');
             full.innerHTML = feat.innerHTML = '';
+            const term = query.trim().toLocaleLowerCase('es');
+            const visibleProducts = products.filter(p => !term || `${p.name} ${p.desc}`.toLocaleLowerCase('es').includes(term));
             
-            products.forEach(p => {
+            visibleProducts.forEach(p => {
                 const card = `<div class="product-card">
-                    <div class="p-img" onclick="openProduct(${p.id})"><img src="${p.img}"></div>
+                    <div class="p-img" onclick="openProduct(${p.id})"><img src="${p.img}" alt="${p.name}"></div>
                     <h3 onclick="openProduct(${p.id})">${p.name}</h3>
                     <div class="price">${format(p.price)}</div>
                 </div>`;
                 full.innerHTML += card;
                 if([23, 24, 20].includes(p.id) && p.stock > 0) feat.innerHTML += card;
             });
+            if (!visibleProducts.length) full.innerHTML = '<div class="catalog-empty">No encontramos productos con esa búsqueda.</div>';
         }
+
+        document.getElementById('catalog-search').addEventListener('input', e => renderGrids(e.target.value));
 
         function openProduct(id) {
             const p = products.find(x => x.id === id);
