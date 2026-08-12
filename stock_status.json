@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-12T17:00:21.293931+00:00",
+  "updated_at": "2026-08-12T23:00:21.711490+00:00",
   "provider": "CVR Electrónica",
   "products": {
     "1": {
@@ -76,7 +76,7 @@
     },
     "20": {
       "status": "disponible",
-      "stock": 22
+      "stock": 21
     },
     "21": {
       "status": "pocas",
