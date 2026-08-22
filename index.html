@@ -258,11 +258,11 @@
                 const products = [
             {id:1, name:"Motor TT Plástico", price:10100, img:"img/motor_tt_plastico.jpg", desc:"Motorreductor estándar 1:48 ideal para proyectos de robótica móvil.", stockStatus:"disponible", stock:6},
             {id:2, name:"Motor TT Metálico", price:25000, img:"img/motor_tt_metalico.jpg", desc:"Potencia extrema. Engranajes de acero para soportar cargas pesadas y máximo torque.", stockStatus:"disponible", stock:7},
-            {id:3, name:"Sensor Ultrasónico", price:16000, img:"img/sensor_ultrasonico.jpg", desc:"El ojo de tu robot. Detecta obstáculos y mide distancias con precisión.", stockStatus:"disponible", stock:8},
+            {id:3, name:"Sensor Ultrasónico HC-SR04", price:16000, img:"img/sensor_ultrasonico.jpg", supplierUrl:"https://www.cvrelectronica.com/description/?product_id=10", desc:"Sensor ultrasónico HC-SR04 para detectar obstáculos y medir distancias. Disponible bajo pedido.", stockStatus:"disponible", stock:8},
             {id:4, name:"Módulo L298N", price:20000, img:"img/l298n.jpg", desc:"Driver de motores Puente H para controlar velocidad y dirección de 2 motores DC.", stockStatus:"agotado", stock:0},
             {id:5, name:"Módulo Bluetooth HC-06", price:38000, img:"img/bluetooth_hc06.jpg", desc:"Módulo Bluetooth HC-06 para comunicación inalámbrica con Arduino y proyectos de robótica. Disponible bajo pedido; sujeto a confirmación del proveedor.", stockStatus:"agotado", stock:0},
             {id:6, name:"Arduino Uno R3", price:57600, img:"img/arduino_uno_r3.jpg", desc:"La placa más versátil para aprender y programar robots.", stockStatus:"agotado", stock:0},
-            {id:7, name:"Arduino Nano + Cable", price:48900, img:"img/arduino_nano.jpg", desc:"Todo el poder de Arduino en un tamaño ultra compacto.", stockStatus:"disponible", stock:11},
+            {id:7, name:"Arduino Nano CH340 + Cable USB", price:48900, img:"img/arduino_nano.jpg", supplierUrl:"https://www.cvrelectronica.com/description/?product_id=217", desc:"Arduino Nano compatible con ATmega328 y cable USB para proyectos escolares y de robótica. Disponible bajo pedido.", stockStatus:"disponible", stock:11},
             {id:8, name:"Servo SG90", price:16300, img:"img/servo_sg90.jpg", desc:"Precisión para brazos robóticos y mecanismos de ángulo exacto.", stockStatus:"agotado", stock:0},
             {id:9, name:"Batería 18650", price:24500, img:"img/bateria_18650.jpg", desc:"Celda de litio recargable de 1700mAh para largas horas de uso.", stockStatus:"disponible", stock:12},
             {id:10, name:"Portabaterías (3 celdas)", price:11000, img:"img/portabaterias_18650.jpg", desc:"Conecta 3 baterías 18650 en serie para el voltaje ideal.", stockStatus:"agotado", stock:0},
@@ -316,6 +316,8 @@
             {id:56, name:"Controlador IR Universal Tuya Zigbee", price:114000, img:"img/tuya-zigbee-ir-controller.jpg", desc:"Controlador infrarrojo universal compatible con Tuya/Smart Life. Disponible bajo pedido; confirmar que sea Zigbee y no Wi-Fi.", stockStatus:"disponible", stock:6},
             {id:57, name:"Sensor de Puerta y Ventana Tuya Zigbee", price:45000, img:"img/tuya-zigbee-door-sensor.jpg", desc:"Sensor magnético Tuya Zigbee para puertas y ventanas, compatible con gateway. Disponible bajo pedido.", stockStatus:"disponible", stock:6},
             {id:58, name:"Gateway Tuya Zigbee 3.0 Cableado LAN", price:155000, img:"img/tuya-zigbee-wired-gateway.jpg", desc:"Gateway Tuya Zigbee 3.0 con conexión cableada/LAN para dispositivos Smart Life. Disponible bajo pedido; confirmar referencia exacta antes de comprar.", stockStatus:"disponible", stock:6},
+            {id:59, name:"Buzzer Pasivo 5V", price:5000, img:"img/cvr-buzzer-pasivo-5v.png", supplierUrl:"https://www.cvrelectronica.com/description/?product_id=1323", desc:"Buzzer pasivo de 5V para alarmas, avisos y proyectos escolares con Arduino. Disponible bajo pedido.", stockStatus:"disponible", stock:6},
+            {id:60, name:"Módulo Step-Up MT3608", price:12900, img:"img/cvr-mt3608.jpg", supplierUrl:"https://www.cvrelectronica.com/description/?product_id=175", desc:"Módulo elevador DC-DC MT3608 para aumentar el voltaje en proyectos portátiles y de robótica. Disponible bajo pedido.", stockStatus:"disponible", stock:12},
         ];
 
         let cart = JSON.parse(localStorage.getItem('dual_cart')) || [];
