@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-08-22T23:40:00+00:00",
-  "provider": "Manual — compra local",
+  "updated_at": "2026-08-23T03:01:54.805094+00:00",
+  "provider": "CVR Electrónica",
   "products": {
     "1": {
       "status": "disponible",
@@ -23,8 +23,8 @@
       "stock": 1
     },
     "6": {
-      "status": "agotado",
-      "stock": 0
+      "status": "disponible",
+      "stock": 21
     },
     "7": {
       "status": "disponible",
@@ -217,6 +217,14 @@
     "61": {
       "status": "disponible",
       "stock": 49
+    },
+    "59": {
+      "status": "disponible",
+      "stock": 6
+    },
+    "60": {
+      "status": "disponible",
+      "stock": 12
     }
   }
 }
