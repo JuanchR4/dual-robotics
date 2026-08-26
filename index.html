@@ -348,7 +348,7 @@
                     <div class="price">${format(p.price)}</div>
                 </div>`;
                 full.innerHTML += card;
-                if([23, 24, 20].includes(p.id) && p.stock > 0) feat.innerHTML += card;
+                if([23, 24, 1].includes(p.id) && p.stock > 0) feat.innerHTML += card;
             });
             if (!visibleProducts.length) full.innerHTML = '<div class="catalog-empty">No encontramos productos con esa búsqueda.</div>';
         }
