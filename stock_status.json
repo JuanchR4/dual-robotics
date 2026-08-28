@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-08-28T13:02:15.837535+00:00",
+  "updated_at": "2026-08-28T17:01:56.478184+00:00",
   "provider": "CVR Electrónica",
   "products": {
     "1": {
@@ -12,11 +12,11 @@
     },
     "3": {
       "status": "disponible",
-      "stock": 8
+      "stock": 7
     },
     "4": {
-      "status": "agotado",
-      "stock": 0
+      "status": "disponible",
+      "stock": 20
     },
     "5": {
       "status": "disponible",
@@ -28,11 +28,11 @@
     },
     "7": {
       "status": "disponible",
-      "stock": 11
+      "stock": 10
     },
     "8": {
-      "status": "agotado",
-      "stock": 0
+      "status": "disponible",
+      "stock": 30
     },
     "9": {
       "status": "disponible",
@@ -43,8 +43,8 @@
       "stock": 1
     },
     "11": {
-      "status": "agotado",
-      "stock": 0
+      "status": "pocas",
+      "stock": 2
     },
     "13": {
       "status": "disponible",
@@ -64,15 +64,15 @@
     },
     "17": {
       "status": "disponible",
-      "stock": 9
+      "stock": 6
     },
     "18": {
       "status": "disponible",
-      "stock": 22
+      "stock": 20
     },
     "19": {
       "status": "disponible",
-      "stock": 14
+      "stock": 12
     },
     "20": {
       "status": "pocas",
@@ -96,7 +96,7 @@
     },
     "25": {
       "status": "disponible",
-      "stock": 11
+      "stock": 9
     },
     "26": {
       "status": "disponible",
@@ -135,8 +135,8 @@
       "stock": 12
     },
     "35": {
-      "status": "disponible",
-      "stock": 7
+      "status": "pocas",
+      "stock": 4
     },
     "36": {
       "status": "disponible",
@@ -171,8 +171,8 @@
       "stock": 2
     },
     "44": {
-      "status": "agotado",
-      "stock": 0
+      "status": "disponible",
+      "stock": 30
     },
     "45": {
       "status": "disponible",
@@ -208,7 +208,7 @@
     },
     "53": {
       "status": "disponible",
-      "stock": 13
+      "stock": 12
     },
     "54": {
       "status": "pocas",
@@ -216,7 +216,7 @@
     },
     "61": {
       "status": "disponible",
-      "stock": 46
+      "stock": 44
     },
     "59": {
       "status": "disponible",
