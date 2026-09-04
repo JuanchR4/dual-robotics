@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-04T13:05:17.257918+00:00",
+  "updated_at": "2026-09-04T17:02:08.290040+00:00",
   "provider": "CVR Electrónica",
   "products": {
     "1": {
@@ -226,8 +226,5 @@
       "status": "disponible",
       "stock": 9
     }
-  },
-  "errors": [
-    "30: Remote end closed connection without response"
-  ]
+  }
 }
