@@ -225,6 +225,10 @@
     "60": {
       "status": "pocas",
       "stock": 3
+    },
+    "62": {
+      "status": "disponible",
+      "stock": 1
     }
   }
 }
