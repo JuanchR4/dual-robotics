@@ -154,11 +154,11 @@
             background: rgba(0,0,0,0.7); z-index: 3000;
             display: none; align-items: center; justify-content: center; padding: 1rem;
         }
-        .cart-window { background: white; width: 100%; max-width: 450px; border-radius: 25px; overflow: hidden; animation: slideUp 0.3s ease-out; }
+        .cart-window { background: white; width: min(92vw, 900px); max-width: 900px; height: min(760px, calc(100vh - 2rem)); border-radius: 25px; overflow: hidden; display: flex; flex-direction: column; animation: slideUp 0.3s ease-out; }
         @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        .cart-header { background: var(--dual-blue); color: white; padding: 1.2rem; display: flex; justify-content: space-between; align-items: center; }
-        .cart-items { padding: 1rem; max-height: 350px; overflow-y: auto; }
+        .cart-header { background: var(--dual-blue); color: white; padding: 1.35rem 1.5rem; display: flex; justify-content: space-between; align-items: center; flex: 0 0 auto; }
+        .cart-items { padding: 1.15rem 1.5rem; flex: 1 1 auto; min-height: 0; max-height: none; overflow-y: auto; overscroll-behavior: contain; }
         .c-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #eee; }
         .c-item-info { flex-grow: 1; text-align: left; }
         .c-item-name { font-size: 0.85rem; font-weight: 900; color: var(--dual-blue); }
@@ -167,8 +167,17 @@
         .btn-mini { width: 25px; height: 25px; border-radius: 50%; border: 1px solid #ccc; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
         .count { font-size: 0.9rem; width: 15px; text-align: center; }
 
-        .cart-footer { padding: 1.5rem; background: #f9f9f9; text-align: center; }
+        .cart-footer { padding: .85rem 1.25rem 1rem; background: #f9f9f9; text-align: center; flex: 0 0 auto; }
         .total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; font-weight: 900; }
+        .cart-header h2 { font-size: 1.55rem; }
+        .c-item { padding: 15px 0; gap: 16px; }
+        .c-item-name { font-size: 1rem; }
+        .c-item-price { font-size: .95rem; }
+        .delivery-notice { background: #fff7ed; border: 1px solid #fed7aa; border-left: 4px solid var(--accent-orange); border-radius: 12px; padding: .7rem .9rem; margin: .55rem 0 .75rem; color: #693b12; font-size: .84rem; line-height: 1.35; display: flex; flex-direction: column; gap: .25rem; }
+        .delivery-notice strong { color: #9a4d00; font-size: .9rem; }
+        .total-row { font-size: 1.05rem; margin-bottom: .8rem; }
+        @media (max-width: 600px) { .cart-window { width: calc(100vw - 1rem); max-width: none; height: calc(100vh - 1rem); } .cart-header { padding: 1.15rem 1.2rem; } .cart-items { padding: 1rem 1.2rem; } .cart-footer { padding: .7rem 1rem .85rem; } .delivery-notice { margin: .4rem 0 .6rem; padding: .6rem .75rem; font-size: .78rem; } }
+
         .btn-finish { background: var(--wa-green); color: white; width: 100%; padding: 1.1rem; border-radius: 50px; border: none; font-weight: 900; cursor: pointer; font-size: 1rem; box-shadow: 0 4px 15px rgba(37,211,102,0.3); }
         .btn-empty { background: transparent; color: #999; border: none; font-size: 0.75rem; cursor: pointer; text-decoration: underline; margin-top: 15px; }
 
@@ -250,6 +259,10 @@
             </div>
             <div class="cart-items" id="cart-items-list"></div>
             <div class="cart-footer">
+                <div class="delivery-notice">
+                    <strong>Información de entrega</strong>
+                    <span>El total mostrado corresponde únicamente al valor de los productos. Para las entregas en Cartagena se adicionará una tarifa de domicilio al valor final del pedido. Los envíos nacionales se habilitarán próximamente.</span>
+                </div>
                 <div class="total-row">
                     <span>TOTAL ESTIMADO:</span>
                     <span id="cart-total-final">$0</span>
@@ -327,6 +340,7 @@
             {id:59, name:"Buzzer Pasivo 5V", price:5000, img:"img/cvr-buzzer-pasivo-5v.png", supplierUrl:"https://www.cvrelectronica.com/description/?product_id=1323", desc:"Buzzer pasivo de 5V para alarmas, avisos y proyectos escolares con Arduino. Disponible bajo pedido.", stockStatus:"agotado", stock:0},
             {id:60, name:"Módulo Step-Up MT3608", price:12900, img:"img/cvr-mt3608.jpg", supplierUrl:"https://www.cvrelectronica.com/description/?product_id=175", desc:"Módulo elevador DC-DC MT3608 para aumentar el voltaje en proyectos portátiles y de robótica. Disponible bajo pedido.", stockStatus:"pocas", stock:3},
             {id:61, name:"Portabaterías 18650 de 2 Celdas", price:9000, img:"https://cvrelectronica.com/productos/imagenes/portaBateria186502.png", supplierUrl:"https://www.cvrelectronica.com/description/?product_id=853", desc:"Portabaterías para dos celdas 18650, con cables y sin switch. Ideal para proyectos compactos de robótica y electrónica. Se vende sin baterías; disponible bajo pedido.", stockStatus:"disponible", stock:42},
+            {id:62, name:"Módulo Regulador DC-DC LM2596S Ajustable", price:13000, img:"img/lm2596s-ajustable.jpg", supplierUrl:"https://www.cvrelectronica.com/description/?product_id=695", desc:"Módulo regulador reductor DC-DC LM2596S ajustable, ideal para adaptar y estabilizar el voltaje en proyectos de Arduino, ESP32, robótica, electrónica y automatización. Permite regular el voltaje de salida mediante su potenciómetro incorporado y cuenta con terminales de entrada y salida para facilitar la conexión. Disponible bajo pedido.", stockStatus:"disponible", stock:1},
         ];
 
         let cart = JSON.parse(localStorage.getItem('dual_cart')) || [];
@@ -465,7 +479,9 @@
 
         function toggleCart() {
             const ov = document.getElementById('cart-overlay');
-            ov.style.display = (ov.style.display === 'flex') ? 'none' : 'flex';
+            const opening = ov.style.display !== 'flex';
+            ov.style.display = opening ? 'flex' : 'none';
+            document.body.style.overflow = opening ? 'hidden' : '';
         }
 
         function clearCart() {
