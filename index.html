@@ -356,7 +356,8 @@
         function renderGrids(query = '') {
             const full = document.getElementById('full-catalog');
             const feat = document.getElementById('featured-grid');
-            full.innerHTML = feat.innerHTML = '';
+            full.innerHTML = '';
+            if (!query.trim()) feat.innerHTML = '';
             const term = query.trim().toLocaleLowerCase('es');
             const visibleProducts = products.filter(p => !term || `${p.name} ${p.desc}`.toLocaleLowerCase('es').includes(term));
             
@@ -367,7 +368,7 @@
                     <div class="price">${format(p.price)}</div>
                 </div>`;
                 full.innerHTML += card;
-                if([23, 24, 1].includes(p.id)) feat.innerHTML += card;
+                if(!query.trim() && [23, 24, 1].includes(p.id)) feat.innerHTML += card;
             });
             if (!visibleProducts.length) full.innerHTML = '<div class="catalog-empty">No encontramos productos con esa búsqueda.</div>';
         }
