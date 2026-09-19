@@ -356,15 +356,22 @@
         function dailyFeaturedProducts() {
             const available = products.filter(p => p.stock > 0);
             if (!available.length) return [];
-            // Mantener visibles los productos estratégicos recientes y rotar el tercer espacio.
-            const priorityIds = [64, 62]; // cinta aislante y regulador LM2596S
-            const priority = priorityIds.map(id => available.find(p => p.id === id)).filter(Boolean);
-            const rotatingPool = available.filter(p => !priorityIds.includes(p.id)).sort((a, b) => a.id - b.id);
-            if (!rotatingPool.length) return priority;
             const today = new Date();
             const dayNumber = Math.floor(new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime() / 86400000);
-            const rotating = rotatingPool[(dayNumber * 3) % rotatingPool.length];
-            return [...priority, rotating];
+            const campaignStart = Math.floor(new Date(2026, 8, 19).getTime() / 86400000);
+            const daysSinceCampaign = dayNumber - campaignStart;
+            // Durante los primeros tres días promocionamos el lote nuevo y el regulador.
+            const launchIds = [64, 62, 63, 65, 66];
+            if (daysSinceCampaign >= 0 && daysSinceCampaign < 3) {
+                const launchPool = launchIds.map(id => available.find(p => p.id === id)).filter(Boolean);
+                if (!launchPool.length) return available.slice(0, 3);
+                const start = (daysSinceCampaign * 2) % launchPool.length;
+                return [0, 1, 2].map(i => launchPool[(start + i) % launchPool.length]);
+            }
+            // Después de la promoción, todos los productos disponibles rotan diariamente.
+            const fullPool = [...available].sort((a, b) => a.id - b.id);
+            const start = (daysSinceCampaign * 3) % fullPool.length;
+            return [0, 1, 2].map(i => fullPool[(start + i) % fullPool.length]);
         }
 
         function productCard(p) {
