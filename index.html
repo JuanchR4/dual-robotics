@@ -353,23 +353,36 @@
 
         function format(num) { return '$' + num.toLocaleString('de-DE'); }
 
+        function dailyFeaturedProducts() {
+            const available = products.filter(p => p.stock > 0);
+            if (!available.length) return [];
+            const newest = [...available].sort((a, b) => b.id - a.id);
+            const older = newest.slice(4);
+            const newestFour = newest.slice(0, 4);
+            const pool = [...newestFour, ...older];
+            const today = new Date();
+            const dayNumber = Math.floor(new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime() / 86400000);
+            const start = (dayNumber * 3) % pool.length;
+            return [0, 1, 2].map(i => pool[(start + i) % pool.length]);
+        }
+
+        function productCard(p) {
+            return `<div class="product-card">
+                <div class="p-img" onclick="openProduct(${p.id})"><img src="${p.img}" alt="${p.name}"></div>
+                <h3 onclick="openProduct(${p.id})">${p.name}</h3>
+                <div class="price">${format(p.price)}</div>
+            </div>`;
+        }
+
         function renderGrids(query = '') {
             const full = document.getElementById('full-catalog');
             const feat = document.getElementById('featured-grid');
             full.innerHTML = '';
-            if (!query.trim()) feat.innerHTML = '';
             const term = query.trim().toLocaleLowerCase('es');
             const visibleProducts = products.filter(p => !term || `${p.name} ${p.desc}`.toLocaleLowerCase('es').includes(term));
-            
-            visibleProducts.forEach(p => {
-                const card = `<div class="product-card">
-                    <div class="p-img" onclick="openProduct(${p.id})"><img src="${p.img}" alt="${p.name}"></div>
-                    <h3 onclick="openProduct(${p.id})">${p.name}</h3>
-                    <div class="price">${format(p.price)}</div>
-                </div>`;
-                full.innerHTML += card;
-                if(!query.trim() && [23, 24, 1].includes(p.id)) feat.innerHTML += card;
-            });
+
+            visibleProducts.forEach(p => { full.innerHTML += productCard(p); });
+            if (!query.trim()) feat.innerHTML = dailyFeaturedProducts().map(productCard).join('');
             if (!visibleProducts.length) full.innerHTML = '<div class="catalog-empty">No encontramos productos con esa búsqueda.</div>';
         }
 
