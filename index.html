@@ -356,14 +356,15 @@
         function dailyFeaturedProducts() {
             const available = products.filter(p => p.stock > 0);
             if (!available.length) return [];
-            const newest = [...available].sort((a, b) => b.id - a.id);
-            const older = newest.slice(4);
-            const newestFour = newest.slice(0, 4);
-            const pool = [...newestFour, ...older];
+            // Mantener visibles los productos estratégicos recientes y rotar el tercer espacio.
+            const priorityIds = [64, 62]; // cinta aislante y regulador LM2596S
+            const priority = priorityIds.map(id => available.find(p => p.id === id)).filter(Boolean);
+            const rotatingPool = available.filter(p => !priorityIds.includes(p.id)).sort((a, b) => a.id - b.id);
+            if (!rotatingPool.length) return priority;
             const today = new Date();
             const dayNumber = Math.floor(new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime() / 86400000);
-            const start = (dayNumber * 3) % pool.length;
-            return [0, 1, 2].map(i => pool[(start + i) % pool.length]);
+            const rotating = rotatingPool[(dayNumber * 3) % rotatingPool.length];
+            return [...priority, rotating];
         }
 
         function productCard(p) {
