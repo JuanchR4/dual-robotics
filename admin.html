@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dual Robotics | Panel administrador</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root{--blue:#0b3d91;--cyan:#00b4d8;--bg:#f4f7fb;--text:#172033;--muted:#667085;--danger:#b42318}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px Arial,sans-serif}header{background:linear-gradient(135deg,var(--blue),#092c68);color:#fff;padding:22px 18px}main{max-width:1100px;margin:24px auto;padding:0 16px}.card{background:#fff;border-radius:14px;padding:20px;box-shadow:0 4px 18px #102a4d12;margin-bottom:18px}h1,h2{margin-top:0}label{display:block;font-weight:700;margin:12px 0 5px}input,textarea,select,button{font:inherit}input,textarea,select{width:100%;padding:11px;border:1px solid #d0d5dd;border-radius:8px;background:#fff}textarea{min-height:80px;resize:vertical}button{border:0;border-radius:8px;padding:11px 15px;cursor:pointer;font-weight:700}.primary{background:var(--blue);color:#fff}.secondary{background:#e7eefb;color:var(--blue)}.danger{background:#fee4e2;color:var(--danger)}.row{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.topbar{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.hidden{display:none!important}.muted{color:var(--muted)}.msg{padding:10px;border-radius:8px;margin:10px 0}.ok{background:#ecfdf3;color:#067647}.err{background:#fef3f2;color:var(--danger)}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:10px;border-bottom:1px solid #eaecf0;vertical-align:top}th{color:var(--muted);font-size:13px}.table-wrap{overflow:auto}.pill{display:inline-block;padding:5px 8px;border-radius:20px;background:#eef4ff;color:var(--blue);font-size:12px}.product-actions{display:flex;gap:6px;flex-wrap:wrap}
+    @media(max-width:650px){.row{grid-template-columns:1fr}main{margin-top:12px}.card{padding:15px}th:nth-child(3),td:nth-child(3){display:none}}
+  </style>
+</head>
+<body>
+<header><main style="margin:0 auto"><h1>Dual Robotics</h1><div>Panel privado de inventario</div></main></header>
+<main>
+  <section id="loginCard" class="card">
+    <h2>Iniciar sesión</h2><p class="muted">Solo el usuario administrador puede editar el inventario.</p>
+    <label for="email">Correo</label><input id="email" type="email" autocomplete="username">
+    <label for="password">Contraseña</label><input id="password" type="password" autocomplete="current-password">
+    <div class="actions"><button id="loginBtn" class="primary">Entrar</button></div><div id="loginMsg"></div>
+  </section>
+
+  <section id="app" class="hidden">
+    <div class="card topbar"><div><strong id="userEmail"></strong><div class="muted">Inventario Dual Robotics</div></div><button id="logoutBtn" class="secondary">Cerrar sesión</button></div>
+    <div id="msg"></div>
+    <section class="card"><div class="topbar"><h2 id="formTitle">Nuevo producto</h2><button id="clearBtn" class="secondary">Limpiar</button></div>
+      <input id="productId" type="hidden"><div class="row">
+        <div><label>Nombre</label><input id="name"></div><div><label>Precio (COP)</label><input id="price" type="number" min="0"></div>
+        <div><label>Stock</label><input id="stock" type="number" min="0"></div><div><label>Estado</label><select id="status"><option value="disponible">Disponible</option><option value="pocas_unidades">Pocas unidades</option><option value="agotado">Agotado</option><option value="bajo_pedido">Bajo pedido</option><option value="disponibilidad_por_confirmar">Disponibilidad por confirmar</option></select></div>
+        <div><label>Fuente</label><input id="source" value="Dual Robotics"></div><div><label>Tipo de inventario</label><select id="inventoryType"><option value="propio">Propio</option><option value="proveedor">Proveedor</option><option value="bajo_pedido">Bajo pedido</option></select></div>
+        <div><label>URL de imagen</label><input id="imageUrl" type="url"></div><div><label>URL del producto</label><input id="productUrl" type="url"></div>
+      </div><label>Descripción</label><textarea id="description"></textarea><div class="actions"><button id="saveBtn" class="primary">Guardar producto</button></div>
+    </section>
+    <section class="card"><div class="topbar"><h2>Productos</h2><input id="search" placeholder="Buscar producto..." style="max-width:300px"></div><div class="table-wrap"><table><thead><tr><th>Producto</th><th>Precio</th><th>Stock</th><th>Estado</th><th>Fuente</th><th>Acciones</th></tr></thead><tbody id="productsBody"></tbody></table></div></section>
+  </section>
+</main>
+<script>
+const SUPABASE_URL='https://vrtgwxfhzslljqnyward.supabase.co';
+const SUPABASE_KEY='sb_publishable_ODyAjKQ-gA8sFX57y_BkmA_4a0nf1Xx';
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+let products=[];
+const $=id=>document.getElementById(id);
+function message(text,error=false){$('msg').innerHTML=text?`<div class="msg ${error?'err':'ok'}">${text}</div>`:''}
+function loginMessage(text,error=false){$('loginMsg').innerHTML=text?`<div class="msg ${error?'err':'ok'}">${text}</div>`:''}
+function esc(v=''){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
+async function load(){const {data,error}=await db.from('products').select('*').order('id');if(error){message(error.message,true);return}products=data||[];render()}
+function render(){const q=($('search').value||'').toLowerCase();$('productsBody').innerHTML=products.filter(p=>p.name.toLowerCase().includes(q)).map(p=>`<tr><td><strong>${esc(p.name)}</strong><br><span class="pill">${esc(p.inventory_type)}</span></td><td>$${Number(p.price_cop||0).toLocaleString('es-CO')}</td><td>${p.stock}</td><td>${esc(p.status)}</td><td>${esc(p.source)}</td><td><div class="product-actions"><button class="secondary" onclick="editProduct(${p.id})">Editar</button><button class="danger" onclick="deleteProduct(${p.id})">Eliminar</button></div></td></tr>`).join('')||'<tr><td colspan="6" class="muted">No hay productos todavía.</td></tr>'}
+function clearForm(){$('productId').value='';$('formTitle').textContent='Nuevo producto';['name','description','imageUrl','productUrl'].forEach(x=>$(x).value='');$('price').value=0;$('stock').value=0;$('status').value='disponible';$('source').value='Dual Robotics';$('inventoryType').value='propio'}
+window.editProduct=id=>{const p=products.find(x=>x.id===id);if(!p)return;$('productId').value=p.id;$('formTitle').textContent='Editar producto';$('name').value=p.name||'';$('description').value=p.description||'';$('price').value=p.price_cop||0;$('stock').value=p.stock||0;$('status').value=p.status||'disponible';$('source').value=p.source||'Dual Robotics';$('inventoryType').value=p.inventory_type||'propio';$('imageUrl').value=p.image_url||'';$('productUrl').value=p.product_url||'';scrollTo({top:0,behavior:'smooth'})}
+window.deleteProduct=async id=>{const p=products.find(x=>x.id===id);if(!p||!confirm(`¿Eliminar ${p.name}?`))return;const {error}=await db.from('products').delete().eq('id',id);if(error)message(error.message,true);else{message('Producto eliminado.');clearForm();load()}}
+$('loginBtn').onclick=async()=>{loginMessage('');const {data,error}=await db.auth.signInWithPassword({email:$('email').value,password:$('password').value});if(error){loginMessage('No se pudo iniciar sesión. Revisa el correo y la contraseña.',true);return}showApp(data.user)};
+$('logoutBtn').onclick=async()=>{await db.auth.signOut();$('app').classList.add('hidden');$('loginCard').classList.remove('hidden')};
+$('clearBtn').onclick=clearForm;$('search').oninput=render;
+$('saveBtn').onclick=async()=>{const id=$('productId').value;const row={name:$('name').value.trim(),description:$('description').value.trim(),price_cop:Number($('price').value||0),stock:Number($('stock').value||0),status:$('status').value,source:$('source').value.trim()||'Dual Robotics',inventory_type:$('inventoryType').value,image_url:$('imageUrl').value.trim()||null,product_url:$('productUrl').value.trim()||null,active:true};if(!row.name){message('Escribe el nombre del producto.',true);return}let result=id?await db.from('products').update(row).eq('id',id):await db.from('products').insert(row);if(result.error)message(result.error.message,true);else{message(id?'Producto actualizado.':'Producto creado.');clearForm();load()}};
+function showApp(user){$('loginCard').classList.add('hidden');$('app').classList.remove('hidden');$('userEmail').textContent=user.email||'';load()}
+db.auth.getSession().then(({data})=>{if(data.session)showApp(data.session.user)});
+</script>
+</body></html>
