@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-20T17:01:59.106274+00:00",
+  "updated_at": "2026-09-21T03:23:29.173503+00:00",
   "provider": "CVR Electrónica",
   "products": {
     "1": {
@@ -232,6 +232,6 @@
     }
   },
   "errors": [
-    "CVR: CVR devolvió una página de protección contra tráfico automatizado"
+    "CVR: no respondió después de los reintentos; se conservaron los estados anteriores"
   ]
 }
