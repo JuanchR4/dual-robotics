@@ -413,17 +413,17 @@
         function getAvailability(p) {
             const status = p.stockStatus;
             const quantity = Number(p.stock || 0);
+            if (status === 'bajo_pedido') {
+                return { className: 'available', label: 'DISPONIBLE BAJO PEDIDO', isOut: false };
+            }
+            if (status === 'disponibilidad_por_confirmar') {
+                return { className: 'low', label: 'DISPONIBILIDAD POR CONFIRMAR', isOut: false };
+            }
             if (status === 'agotado' || quantity <= 0) {
                 return { className: 'out', label: 'AGOTADO TEMPORALMENTE', isOut: true };
             }
             if (status === 'pocas' || status === 'pocas_unidades') {
                 return { className: 'low', label: 'POCAS UNIDADES DISPONIBLES', isOut: false };
-            }
-            if (status === 'disponibilidad_por_confirmar') {
-                return { className: 'low', label: 'DISPONIBILIDAD POR CONFIRMAR', isOut: false };
-            }
-            if (status === 'bajo_pedido') {
-                return { className: 'available', label: 'DISPONIBLE BAJO PEDIDO', isOut: false };
             }
             if (quantity <= 5) {
                 return { className: 'low', label: 'POCAS UNIDADES DISPONIBLES', isOut: false };
