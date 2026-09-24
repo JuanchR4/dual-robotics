@@ -410,6 +410,27 @@
             </div>`;
         }
 
+        function getAvailability(p) {
+            const status = p.stockStatus;
+            const quantity = Number(p.stock || 0);
+            if (status === 'agotado' || quantity <= 0) {
+                return { className: 'out', label: 'AGOTADO TEMPORALMENTE', isOut: true };
+            }
+            if (status === 'pocas' || status === 'pocas_unidades') {
+                return { className: 'low', label: 'POCAS UNIDADES DISPONIBLES', isOut: false };
+            }
+            if (status === 'disponibilidad_por_confirmar') {
+                return { className: 'low', label: 'DISPONIBILIDAD POR CONFIRMAR', isOut: false };
+            }
+            if (status === 'bajo_pedido') {
+                return { className: 'available', label: 'DISPONIBLE BAJO PEDIDO', isOut: false };
+            }
+            if (quantity <= 5) {
+                return { className: 'low', label: 'POCAS UNIDADES DISPONIBLES', isOut: false };
+            }
+            return { className: 'available', label: p.id === 1 ? 'Disponible para entrega inmediata' : 'Disponible bajo pedido', isOut: false };
+        }
+
         function renderGrids(query = '') {
             const full = document.getElementById('full-catalog');
             const feat = document.getElementById('featured-grid');
@@ -429,6 +450,7 @@
             currentModalQty = 1;
             const inCart = cart.find(x => x.id === id);
             const hint = inCart ? `<div style="font-size:0.7rem; color:#888; margin-top:10px;">Ya tienes ${inCart.qty} en el carrito</div>` : '';
+            const availability = getAvailability(p);
             
             document.getElementById('modal-content').innerHTML = `
                 <div><img src="${p.img}" style="max-width:100%; border-radius:15px;"></div>
@@ -441,9 +463,9 @@
                         <div class="qty-val" id="m-qty">1</div>
                         <button class="qty-btn" onclick="updateModalQty(1)">+</button>
                     </div>
-                    <button class="add-to-cart-btn" ${p.stock <= 0 ? 'disabled' : ''} onclick="addToCart(${p.id}, event)">${p.stock <= 0 ? 'AGOTADO TEMPORALMENTE' : 'AÑADIR AL CARRITO'}</button>
-                    <button class="buy-now-wa" ${p.stock <= 0 ? 'disabled' : ''} onclick="buyNowWA(${p.id})">${p.stock <= 0 ? 'AGOTADO TEMPORALMENTE' : 'Comprar solo este (WhatsApp)'}</button>
-                    <div class="stock-info ${p.stock <= 0 ? 'out' : (p.stock <= 5 ? 'low' : 'available')}"><span class="stock-dot"></span>${p.stock <= 0 ? 'AGOTADO TEMPORALMENTE' : (p.stock <= 5 ? 'POCAS UNIDADES DISPONIBLES' : (p.id === 1 ? 'Disponible para entrega inmediata' : 'Disponible bajo pedido'))}</div>
+                    <button class="add-to-cart-btn" ${availability.isOut ? 'disabled' : ''} onclick="addToCart(${p.id}, event)">${availability.isOut ? 'AGOTADO TEMPORALMENTE' : 'AÑADIR AL CARRITO'}</button>
+                    <button class="buy-now-wa" ${availability.isOut ? 'disabled' : ''} onclick="buyNowWA(${p.id})">${availability.isOut ? 'AGOTADO TEMPORALMENTE' : 'Comprar solo este (WhatsApp)'}</button>
+                    <div class="stock-info ${availability.className}"><span class="stock-dot"></span>${availability.label}</div>
                     ${hint}
                 </div>
             `;
@@ -459,7 +481,7 @@
 
         function addToCart(id, e) {
             const p = products.find(x => x.id === id);
-            if (p.stock <= 0) return;
+            if (getAvailability(p).isOut) return;
             const inCart = cart.find(x => x.id === id);
             if(inCart) inCart.qty += currentModalQty;
             else cart.push({...p, qty: currentModalQty});
