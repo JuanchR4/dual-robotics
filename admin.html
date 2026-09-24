@@ -59,7 +59,22 @@ $('importBtn').onclick=async()=>{
   const {error}=await db.from('products').upsert(rows,{onConflict:'id'});
   if(error)message(error.message,true);else{message('Catálogo importado correctamente: '+rows.length+' productos.');await load()}
 };
-$('saveBtn').onclick=async()=>{const id=$('productId').value;const row={name:$('name').value.trim(),description:$('description').value.trim(),price_cop:Number($('price').value||0),stock:Number($('stock').value||0),status:$('status').value,source:$('source').value.trim()||'Dual Robotics',inventory_type:$('inventoryType').value,image_url:$('imageUrl').value.trim()||null,product_url:$('productUrl').value.trim()||null,active:true};if(!row.name){message('Escribe el nombre del producto.',true);return}let result=id?await db.from('products').update(row).eq('id',id):await db.from('products').insert(row);if(result.error)message(result.error.message,true);else{message(id?'Producto actualizado.':'Producto creado.');clearForm();load()}};
+$('saveBtn').onclick=async()=>{
+  const id=$('productId').value;
+  const row={name:$('name').value.trim(),description:$('description').value.trim(),price_cop:Number($('price').value||0),stock:Number($('stock').value||0),status:$('status').value,source:$('source').value.trim()||'Dual Robotics',inventory_type:$('inventoryType').value,image_url:$('imageUrl').value.trim()||null,product_url:$('productUrl').value.trim()||null,active:true};
+  if(!row.name){message('Escribe el nombre del producto.',true);return}
+  let result;
+  if(id){
+    result=await db.from('products').update(row).eq('id',id);
+  }else{
+    // Importaciones con IDs explícitos pueden dejar atrás el contador automático.
+    const {data:lastProducts,error:lastError}=await db.from('products').select('id').order('id',{ascending:false}).limit(1);
+    if(lastError){message(lastError.message,true);return}
+    const nextId=(Number(lastProducts?.[0]?.id)||0)+1;
+    result=await db.from('products').insert({...row,id:nextId});
+  }
+  if(result.error)message(result.error.message,true);else{message(id?'Producto actualizado.':'Producto creado.');clearForm();load()}
+};
 function showApp(user){$('loginCard').classList.add('hidden');$('app').classList.remove('hidden');$('userEmail').textContent=user.email||'';load()}
 db.auth.getSession().then(({data})=>{if(data.session)showApp(data.session.user)});
 </script>
