@@ -104,7 +104,9 @@
         .services-intro { max-width: 760px; margin: -1.5rem auto 2.25rem; text-align: center; color: #4b5563; font: 1rem/1.6 Arial, sans-serif; }
         .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 22px; align-items: stretch; }
         .service-card { display: flex; flex-direction: column; align-items: flex-start; min-height: 100%; padding: 26px 24px; border: 1px solid #e6eaf0; border-radius: 18px; background: #fff; box-shadow: 0 5px 18px rgba(8,26,58,0.07); }
-        .service-icon { width: 54px; height: 54px; display: grid; place-items: center; margin-bottom: 18px; border-radius: 15px; background: #fff2e9; font-size: 1.65rem; }
+        .service-icon { width: 54px; height: 54px; display: grid; place-items: center; margin-bottom: 18px; border-radius: 15px; background: #fff2e9; }
+        .service-icon svg { width: 28px; height: 28px; fill: none; stroke: var(--dual-blue); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .service-icon .icon-accent { stroke: var(--accent-orange); }
         .service-card h3 { margin: 0 0 10px; color: var(--dual-blue); font-size: 1.12rem; line-height: 1.35; text-transform: uppercase; }
         .service-card p { margin: 0 0 18px; color: #4b5563; font: 0.96rem/1.55 Arial, sans-serif; }
         .service-price { margin-top: auto !important; color: var(--dual-blue) !important; font-weight: 700 !important; }
@@ -259,21 +261,21 @@
             <p class="services-intro">Soluciones para llevar tus ideas de robótica, electrónica y tecnología a la práctica.</p>
             <div class="services-grid">
                 <article class="service-card">
-                    <div class="service-icon" aria-hidden="true">🧩</div>
+                    <div class="service-icon" aria-hidden="true" data-icon="cpu"><svg viewBox="0 0 24 24" focusable="false"><rect x="4" y="4" width="16" height="16" rx="2"/><rect class="icon-accent" x="9" y="9" width="6" height="6" rx="1"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg></div>
                     <h3>Programación de Arduino y ESP32</h3>
                     <p>Apoyo con código, integración y ajustes para proyectos de robótica, electrónica y automatización.</p>
                     <p class="service-price">Precio: cotización según el alcance del proyecto.</p>
                     <a class="service-quote" href="https://wa.me/573206229042?text=Hola%2C%20vengo%20desde%20la%20web%20de%20Dual%20Robotics%20y%20quiero%20cotizar%20programaci%C3%B3n%20para%20un%20proyecto%20con%20Arduino%20o%20ESP32.%20%C2%BFQu%C3%A9%20informaci%C3%B3n%20necesitan%20para%20revisar%20el%20alcance%3F" target="_blank" rel="noopener noreferrer" aria-label="Solicitar cotización de programación para Arduino o ESP32 por WhatsApp">Cotizar por WhatsApp</a>
                 </article>
                 <article class="service-card">
-                    <div class="service-icon" aria-hidden="true">🛠️</div>
+                    <div class="service-icon" aria-hidden="true" data-icon="wrench"><svg viewBox="0 0 24 24" focusable="false"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94L14.7 6.3"/></svg></div>
                     <h3>Corrección de proyectos</h3>
                     <p>Revisión de conexiones, programación y funcionamiento para identificar fallas y orientar su solución.</p>
                     <p class="service-price">Precio: cotización según el alcance del proyecto.</p>
                     <a class="service-quote" href="https://wa.me/573206229042?text=Hola%2C%20vengo%20desde%20la%20web%20de%20Dual%20Robotics%20y%20necesito%20ayuda%20para%20corregir%20un%20proyecto%20de%20rob%C3%B3tica%20o%20electr%C3%B3nica.%20%C2%BFQu%C3%A9%20informaci%C3%B3n%20necesitan%20para%20cotizarlo%3F" target="_blank" rel="noopener noreferrer" aria-label="Solicitar cotización para corregir un proyecto por WhatsApp">Cotizar por WhatsApp</a>
                 </article>
                 <article class="service-card">
-                    <div class="service-icon" aria-hidden="true">🌐</div>
+                    <div class="service-icon" aria-hidden="true" data-icon="monitor"><svg viewBox="0 0 24 24" focusable="false"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8" class="icon-accent"/><path d="M12 17v4"/></svg></div>
                     <h3>Desarrollo de páginas web</h3>
                     <p>Páginas para presentar tu negocio, emprendimiento o proyecto, adaptadas para celular y computador.</p>
                     <p class="service-price">Precio: cotización según el alcance del proyecto.</p>
