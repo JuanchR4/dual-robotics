@@ -408,7 +408,7 @@
                 id: p.id,
                 name: p.name,
                 price: p.price_cop,
-                img: p.image_url || '',
+                img: Number(p.id) === 56 ? 'img/tuya-zigbee-ir-controller-20261002.png' : (p.image_url || ''),
                 supplierUrl: p.product_url || undefined,
                 desc: p.description || '',
                 stockStatus: p.status === 'pocas_unidades' ? 'pocas' : p.status,
