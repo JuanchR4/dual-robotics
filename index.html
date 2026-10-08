@@ -135,6 +135,7 @@
         /* CONTROLES CANTIDAD MODAL */
         .qty-control { display: flex; align-items: center; justify-content: center; gap: 15px; margin: 20px 0; }
         .qty-btn { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--dual-blue); background: white; color: var(--dual-blue); font-size: 1.5rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .qty-btn:disabled { opacity: .45; cursor: not-allowed; }
         .qty-val { font-size: 1.4rem; width: 30px; font-weight: 900; }
 
         .add-to-cart-btn { background: var(--dual-blue); color: white; width: 100%; padding: 1.2rem; border-radius: 50px; border: none; font-weight: 900; text-transform: uppercase; cursor: pointer; font-size: 1rem; transition: transform 0.1s; }
@@ -147,6 +148,9 @@
         .stock-info.low { color: #d68910; }
         .stock-info.out { color: #d35400; }
         .stock-dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; background:currentColor; }
+        .stock-limit-message { display:none; margin:10px 0 0; padding:10px 12px; border:1px solid #fed7aa; border-left:4px solid var(--accent-orange); border-radius:10px; background:#fff7ed; color:#693b12; font:600 .84rem/1.4 Arial,sans-serif; text-align:left; }
+        .stock-limit-message.visible { display:block; }
+        #cart-stock-limit-message { margin:0 0 .7rem; font-size:.82rem; }
         .add-to-cart-btn:disabled, .buy-now-wa:disabled { cursor:not-allowed; opacity:1; }
         .add-to-cart-btn:disabled { background:#777; color:#fff; }
         .buy-now-wa:disabled { color:#777; text-decoration:none; }
@@ -303,6 +307,7 @@
             </div>
             <div class="cart-items" id="cart-items-list"></div>
             <div class="cart-footer">
+                <div id="cart-stock-limit-message" class="stock-limit-message" role="status" aria-live="polite"></div>
                 <div class="delivery-notice">
                     <strong>Información de entrega</strong>
                     <span>El total mostrado corresponde únicamente al valor de los productos. Para las entregas en Cartagena se adicionará una tarifa de domicilio al valor final del pedido. Los envíos nacionales se habilitarán próximamente.</span>
@@ -420,8 +425,78 @@
 
         let cart = JSON.parse(localStorage.getItem('dual_cart')) || [];
         let currentModalQty = 1;
+        let currentModalProductId = null;
+        let modalStockMessageTimer = null;
+        let cartStockMessageTimer = null;
+        const STOCK_NOTICE_DURATION = 3000;
 
         function format(num) { return '$' + num.toLocaleString('de-DE'); }
+        function getProductById(id) { return products.find(product => Number(product.id) === Number(id)); }
+        function getCartQty(id) {
+            const item = cart.find(product => Number(product.id) === Number(id));
+            return item ? Math.max(0, Number(item.qty) || 0) : 0;
+        }
+        function getStockLimit(product) {
+            if (!product) return 0;
+            const stock = Number(product.stock);
+            if (!Number.isFinite(stock) || stock < 0 || getAvailability(product).isOut) return 0;
+            return Math.max(0, Math.floor(stock));
+        }
+        function getRemainingStock(id) {
+            return Math.max(0, getStockLimit(getProductById(id)) - getCartQty(id));
+        }
+        function stockLimitNoticeFor(product) {
+            return product
+                ? `Ya alcanzaste el máximo disponible de ${product.name}. No se pueden agregar más unidades.`
+                : 'Este producto ya no está disponible. Retíralo del carrito para continuar.';
+        }
+        function showModalStockMessage(message = '') {
+            const notice = document.getElementById('m-stock-limit');
+            if (!notice) return;
+            notice.textContent = message || stockLimitNoticeFor(getProductById(currentModalProductId));
+            notice.classList.add('visible');
+            clearTimeout(modalStockMessageTimer);
+            modalStockMessageTimer = setTimeout(clearModalStockMessage, STOCK_NOTICE_DURATION);
+        }
+        function clearModalStockMessage() {
+            clearTimeout(modalStockMessageTimer);
+            modalStockMessageTimer = null;
+            const notice = document.getElementById('m-stock-limit');
+            if (!notice) return;
+            notice.textContent = '';
+            notice.classList.remove('visible');
+        }
+        function showCartStockMessage(id, message = '') {
+            const notice = document.getElementById('cart-stock-limit-message');
+            if (!notice) return;
+            notice.textContent = message || stockLimitNoticeFor(getProductById(id));
+            notice.classList.add('visible');
+            clearTimeout(cartStockMessageTimer);
+            cartStockMessageTimer = setTimeout(clearCartStockMessage, STOCK_NOTICE_DURATION);
+        }
+        function clearCartStockMessage() {
+            clearTimeout(cartStockMessageTimer);
+            cartStockMessageTimer = null;
+            const notice = document.getElementById('cart-stock-limit-message');
+            if (!notice) return;
+            notice.textContent = '';
+            notice.classList.remove('visible');
+        }
+        function cartMatchesCurrentStock() {
+            for (const item of cart) {
+                const product = getProductById(item.id);
+                if (!product) {
+                    showCartStockMessage(item.id, 'Este producto ya no aparece disponible. Retíralo del carrito para continuar.');
+                    return false;
+                }
+                if (Number(item.qty) > getStockLimit(product)) {
+                    showCartStockMessage(item.id, `La disponibilidad de ${product.name} cambió. Ajusta la cantidad para continuar.`);
+                    return false;
+                }
+            }
+            clearCartStockMessage();
+            return true;
+        }
 
         function dailyFeaturedProducts() {
             const available = products.filter(p => p.stock > 0);
@@ -488,12 +563,20 @@
         document.getElementById('catalog-search').addEventListener('input', e => renderGrids(e.target.value));
 
         function openProduct(id) {
-            const p = products.find(x => x.id === id);
-            currentModalQty = 1;
-            const inCart = cart.find(x => x.id === id);
-            const hint = inCart ? `<div style="font-size:0.7rem; color:#888; margin-top:10px;">Ya tienes ${inCart.qty} en el carrito</div>` : '';
+            const p = getProductById(id);
+            if (!p) return;
+            clearModalStockMessage();
+            currentModalProductId = Number(id);
             const availability = getAvailability(p);
-            
+            const maxQty = getRemainingStock(id);
+            const inCartQty = getCartQty(id);
+            currentModalQty = maxQty > 0 ? 1 : 0;
+            const hint = inCartQty > 0 ? `<div style="font-size:0.7rem; color:#888; margin-top:10px;">Ya tienes ${inCartQty} en el carrito</div>` : '';
+            const initialNotice = maxQty <= 0
+                ? (inCartQty > 0 ? stockLimitNoticeFor(p) : 'Este producto no tiene unidades disponibles para agregar por ahora.')
+                : '';
+            const unavailable = maxQty <= 0;
+
             document.getElementById('modal-content').innerHTML = `
                 <div><img src="${p.img}" style="max-width:100%; border-radius:15px;"></div>
                 <div>
@@ -501,42 +584,61 @@
                     <div class="price">${format(p.price)}</div>
                     <p style="font-family:sans-serif; font-size:0.9rem; color:#666; line-height:1.4;">${p.desc}</p>
                     <div class="qty-control">
-                        <button class="qty-btn" onclick="updateModalQty(-1)">-</button>
-                        <div class="qty-val" id="m-qty">1</div>
-                        <button class="qty-btn" onclick="updateModalQty(1)">+</button>
+                        <button class="qty-btn" id="modal-minus" onclick="updateModalQty(-1)" ${currentModalQty <= 0 ? 'disabled' : ''}>-</button>
+                        <div class="qty-val" id="m-qty">${currentModalQty}</div>
+                        <button class="qty-btn" id="modal-plus" onclick="updateModalQty(1)" ${unavailable ? 'disabled' : ''}>+</button>
                     </div>
-                    <button class="add-to-cart-btn" ${availability.isOut ? 'disabled' : ''} onclick="addToCart(${p.id}, event)">${availability.isOut ? 'AGOTADO TEMPORALMENTE' : 'AÑADIR AL CARRITO'}</button>
-                    <button class="buy-now-wa" ${availability.isOut ? 'disabled' : ''} onclick="buyNowWA(${p.id})">${availability.isOut ? 'AGOTADO TEMPORALMENTE' : 'Comprar solo este (WhatsApp)'}</button>
+                    <div class="stock-limit-message" id="m-stock-limit" role="status" aria-live="polite"></div>
+                    <button class="add-to-cart-btn" id="modal-add-btn" ${unavailable ? 'disabled' : ''} onclick="addToCart(${p.id}, event)">${availability.isOut ? 'AGOTADO TEMPORALMENTE' : 'AÑADIR AL CARRITO'}</button>
+                    <button class="buy-now-wa" id="modal-buy-btn" ${unavailable ? 'disabled' : ''} onclick="buyNowWA(${p.id})">${availability.isOut ? 'AGOTADO TEMPORALMENTE' : 'Comprar solo este (WhatsApp)'}</button>
                     <div class="stock-info ${availability.className}"><span class="stock-dot"></span>${availability.label}</div>
                     ${hint}
                 </div>
             `;
             document.getElementById('product-modal').classList.add('modal-active');
+            if (initialNotice) showModalStockMessage(initialNotice);
         }
 
         function updateModalQty(v) {
-            currentModalQty = Math.max(1, currentModalQty + v);
+            const maxQty = getRemainingStock(currentModalProductId);
+            const nextQty = currentModalQty + Number(v);
+            if (Number(v) > 0 && nextQty > maxQty) {
+                showModalStockMessage();
+                return;
+            }
+            currentModalQty = Math.max(0, Math.min(maxQty, nextQty));
             document.getElementById('m-qty').innerText = currentModalQty;
+            document.getElementById('modal-minus').disabled = currentModalQty <= 0;
+            document.getElementById('modal-add-btn').disabled = currentModalQty <= 0;
+            document.getElementById('modal-buy-btn').disabled = currentModalQty <= 0;
+            if (currentModalQty < maxQty) clearModalStockMessage();
         }
 
-        function closeModal() { document.getElementById('product-modal').classList.remove('modal-active'); }
+        function closeModal() {
+            clearModalStockMessage();
+            document.getElementById('product-modal').classList.remove('modal-active');
+            currentModalProductId = null;
+        }
 
         function addToCart(id, e) {
-            const p = products.find(x => x.id === id);
-            if (getAvailability(p).isOut) return;
-            const inCart = cart.find(x => x.id === id);
-            if(inCart) inCart.qty += currentModalQty;
+            const p = getProductById(id);
+            if (!p || currentModalQty <= 0 || currentModalQty > getRemainingStock(id)) {
+                showModalStockMessage(p ? stockLimitNoticeFor(p) : 'Este producto ya no está disponible.');
+                return;
+            }
+            const inCart = cart.find(x => Number(x.id) === Number(id));
+            if (inCart) inCart.qty = Number(inCart.qty) + currentModalQty;
             else cart.push({...p, qty: currentModalQty});
-            
-            // Animación +1
+
             const plus = document.createElement('div');
             plus.className = 'plus-one';
             plus.innerText = '+' + currentModalQty;
-            plus.style.left = e.clientX + 'px';
-            plus.style.top = e.clientY + 'px';
+            plus.style.left = (e && Number.isFinite(e.clientX) ? e.clientX : window.innerWidth / 2) + 'px';
+            plus.style.top = (e && Number.isFinite(e.clientY) ? e.clientY : window.innerHeight / 2) + 'px';
             document.body.appendChild(plus);
             setTimeout(() => plus.remove(), 600);
 
+            clearModalStockMessage();
             saveCart();
             closeModal();
         }
@@ -590,9 +692,17 @@
         }
 
         function changeQty(id, v) {
-            const i = cart.find(x => x.id === id);
-            i.qty += v;
-            if(i.qty <= 0) cart = cart.filter(x => x.id !== id);
+            const i = cart.find(x => Number(x.id) === Number(id));
+            if (!i) return;
+            const product = getProductById(id);
+            const nextQty = Number(i.qty) + Number(v);
+            if (Number(v) > 0 && (!product || nextQty > getStockLimit(product))) {
+                showCartStockMessage(id, product ? stockLimitNoticeFor(product) : 'Este producto ya no aparece disponible. Retíralo del carrito para continuar.');
+                return;
+            }
+            i.qty = nextQty;
+            if (i.qty <= 0) cart = cart.filter(item => Number(item.id) !== Number(id));
+            clearCartStockMessage();
             saveCart();
         }
 
@@ -601,17 +711,20 @@
             const opening = ov.style.display !== 'flex';
             ov.style.display = opening ? 'flex' : 'none';
             document.body.style.overflow = opening ? 'hidden' : '';
+            if (!opening) clearCartStockMessage();
         }
 
         function clearCart() {
             if(confirm('¿Seguro que quieres vaciar tu carrito?')) {
                 cart = [];
+                clearCartStockMessage();
                 saveCart();
                 toggleCart();
             }
         }
 
         function checkoutWA() {
+            if (!cartMatchesCurrentStock()) return;
             let msg = "Hola Dual Robotics, quiero hacer el siguiente pedido:\n\n";
             cart.forEach(i => {
                 msg += `- ${i.qty}x ${i.name} (${format(i.price * i.qty)})\n`;
@@ -622,7 +735,11 @@
         }
 
         function buyNowWA(id) {
-            const p = products.find(x => x.id === id);
+            const p = getProductById(id);
+            if (!p || currentModalQty <= 0 || currentModalQty > getRemainingStock(id)) {
+                showModalStockMessage(p ? stockLimitNoticeFor(p) : 'Este producto ya no está disponible.');
+                return;
+            }
             const msg = `Hola Dual Robotics, quiero el producto ${p.name.toUpperCase()} (Cantidad: ${currentModalQty}) por favor.`;
             window.open(`https://wa.me/573206229042?text=${encodeURIComponent(msg)}`);
         }
